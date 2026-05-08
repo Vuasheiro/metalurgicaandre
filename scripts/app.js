@@ -44,6 +44,11 @@ const dom = {
   projectLightbox: document.querySelector("[data-project-lightbox]"),
   lightboxImage: document.querySelector("[data-lightbox-image]"),
   lightboxTitle: document.querySelector("[data-lightbox-title]"),
+  searchMobile: document.querySelector("[data-search-mobile]"),
+  filterToggle: document.querySelector("#filter-toggle"),
+  filterDrawer: document.querySelector("#filter-drawer"),
+  filterBackdrop: document.querySelector("#filter-backdrop"),
+  filterClose: document.querySelector("#filter-close"),
 };
 
 const categoryLabels = new Map(categories.map((category) => [category.id, category.label]));
@@ -414,6 +419,40 @@ const bindEvents = () => {
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeModal();
     if (event.key === "Escape") closeProjectLightbox();
+  });
+
+  // Mobile search
+  dom.searchMobile?.addEventListener("input", (event) => {
+    state.query = event.target.value.trim();
+    renderAll();
+  });
+
+  // Filter drawer
+  const openDrawer = () => {
+    dom.filterDrawer?.setAttribute("aria-hidden", "false");
+    dom.filterToggle?.setAttribute("aria-expanded", "true");
+    document.body.classList.add("drawer-open");
+  };
+
+  const closeDrawer = () => {
+    dom.filterDrawer?.setAttribute("aria-hidden", "true");
+    dom.filterToggle?.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("drawer-open");
+  };
+
+  dom.filterToggle?.addEventListener("click", openDrawer);
+  dom.filterClose?.addEventListener("click", closeDrawer);
+  dom.filterBackdrop?.addEventListener("click", closeDrawer);
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeDrawer();
+  });
+
+  // Auto-close drawer ao selecionar filtro
+  dom.filterDrawer?.addEventListener("click", (event) => {
+    if (event.target.closest("[data-category]") || event.target.closest("[data-type]")) {
+      setTimeout(closeDrawer, 180);
+    }
   });
 };
 

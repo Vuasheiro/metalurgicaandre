@@ -114,6 +114,17 @@
         </aside>
 
         <div class="catalog-content reveal">
+          <!-- Barra mobile: busca + filtro -->
+          <div class="mobile-filter-bar" id="mobile-filter-bar">
+            <label class="mobile-search-wrap" aria-label="Buscar produto">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input data-search-mobile type="search" placeholder="Buscar modelo ou acabamento" autocomplete="off" />
+            </label>
+            <button class="filter-toggle-btn" id="filter-toggle" type="button" aria-expanded="false" aria-controls="filter-drawer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+              Filtrar
+            </button>
+          </div>
           <div class="section-heading catalog-heading">
             <div>
               <p class="eyebrow">Catálogo premium</p>
@@ -259,6 +270,27 @@
       <button type="button" data-close-project aria-label="Fechar projeto">×</button>
       <img data-lightbox-image alt="" />
       <strong data-lightbox-title></strong>
+    </div>
+
+    <!-- Filter Drawer (mobile) -->
+    <div class="filter-drawer" id="filter-drawer" aria-hidden="true" aria-label="Filtros">
+      <div class="filter-drawer-backdrop" id="filter-backdrop"></div>
+      <div class="filter-drawer-panel">
+        <div class="filter-drawer-header">
+          <strong>Filtrar modelos</strong>
+          <button class="filter-drawer-close" id="filter-close" type="button" aria-label="Fechar filtros">×</button>
+        </div>
+        <div class="filter-drawer-body">
+          <div class="filter-group">
+            <span class="filter-group-label">Categorias</span>
+            <div class="filter-list" data-filter-categories></div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-group-label">Tipos</span>
+            <div class="filter-list" data-filter-types></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script type="module" src="scripts/app.js"></script>
