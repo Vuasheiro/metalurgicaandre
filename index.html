@@ -13,7 +13,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="preconnect" href="https://images.pexels.com" />
-    <link rel="stylesheet" href="styles/main.css" />
+
+    <!-- Estilos — cada arquivo tem responsabilidade única -->
+    <link rel="stylesheet" href="styles/variables.css" />
+    <link rel="stylesheet" href="styles/animations.css" />
+    <link rel="stylesheet" href="styles/layout.css" />
+    <link rel="stylesheet" href="styles/components.css" />
+    <link rel="stylesheet" href="styles/mobile.css" />
+
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -33,7 +40,7 @@
     <header class="site-header" id="inicio">
       <div class="header-main">
         <a class="brand" href="#inicio" aria-label="ANDRÉ SERRALHEIRO">
-          <img src="assets/logo.png" alt="Logo ANDRÉ SERRALHEIRO" width="132" height="132" />
+          <img src="assets/images/logo/logo.png" alt="Logo ANDRÉ SERRALHEIRO" width="132" height="132" />
         </a>
 
         <label class="search-box">
@@ -79,7 +86,7 @@
         </div>
 
         <article class="hero-showcase" aria-label="Destaques da serralheria">
-          <img src="assets/logo.png" alt="Identidade visual da ANDRÉ SERRALHEIRO" loading="lazy" />
+          <img src="assets/images/logo/logo.png" alt="Identidade visual da ANDRÉ SERRALHEIRO" loading="lazy" />
           <div class="showcase-lines">
             <span>Portas</span>
             <span>Janelas</span>
@@ -223,14 +230,8 @@
           <p class="detail-summary" data-modal-description></p>
 
           <div class="meta-grid">
-            <div>
-              <span>Tipo</span>
-              <strong data-modal-type></strong>
-            </div>
-            <div>
-              <span>Valor</span>
-              <strong data-modal-value></strong>
-            </div>
+            <div><span>Tipo</span><strong data-modal-type></strong></div>
+            <div><span>Valor</span><strong data-modal-value></strong></div>
           </div>
 
           <div class="option-group">

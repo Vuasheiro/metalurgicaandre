@@ -1,5 +1,30 @@
-import { WHATSAPP_NUMBER, categories, products, projects } from "../data/catalog.js";
+// ============================================================
+// app.js — Orquestrador principal
+// ============================================================
+// Importa os módulos e inicializa a aplicação.
+// Mantém o estado global e as referências do DOM.
+// ============================================================
 
+import { products } from "../data/catalog.js";
+import { projects } from "../data/projects.js";
+import { observeReveals, hideLoader, initParallax } from "./animations.js";
+import {
+  renderCategoryNav,
+  renderFilterButtons,
+  renderProducts,
+  renderProjects,
+  renderSkeleton,
+} from "./filters.js";
+import {
+  openModal,
+  closeModal,
+  openProjectLightbox,
+  closeProjectLightbox,
+  updateWhatsAppLink,
+} from "./modal.js";
+import { initMobileMenu, closeMobileMenu, initFilterDrawer } from "./mobile.js";
+
+// ── Estado global ────────────────────────────────────────────
 const state = {
   category: "todos",
   type: "todos",
@@ -12,459 +37,147 @@ const state = {
   observation: "",
 };
 
+// ── Referências do DOM ───────────────────────────────────────
 const dom = {
-  loader: document.querySelector("[data-loader]"),
-  header: document.querySelector(".site-header"),
-  menuButton: document.querySelector(".menu-button"),
-  categoryNav: document.querySelector("[data-category-nav]"),
-  search: document.querySelector("[data-search]"),
-  filterCategories: document.querySelector("[data-filter-categories]"),
-  filterTypes: document.querySelector("[data-filter-types]"),
-  activeFilters: document.querySelector("[data-active-filters]"),
-  grid: document.querySelector("[data-product-grid]"),
-  resultCount: document.querySelector("[data-result-count]"),
-  catalogTitle: document.querySelector("[data-catalog-title]"),
-  emptyState: document.querySelector("[data-empty-state]"),
-  modal: document.querySelector("[data-product-modal]"),
-  modalImage: document.querySelector("[data-modal-image]"),
-  modalThumbs: document.querySelector("[data-modal-thumbs]"),
-  modalCategory: document.querySelector("[data-modal-category]"),
-  modalCode: document.querySelector("[data-modal-code]"),
-  modalName: document.querySelector("[data-modal-name]"),
-  modalDescription: document.querySelector("[data-modal-description]"),
-  modalType: document.querySelector("[data-modal-type]"),
-  modalValue: document.querySelector("[data-modal-value]"),
-  modalMeasures: document.querySelector("[data-modal-measures]"),
-  modalOpenings: document.querySelector("[data-modal-openings]"),
-  modalFinishes: document.querySelector("[data-modal-finishes]"),
-  modalObservation: document.querySelector("[data-modal-observation]"),
-  modalWhatsapp: document.querySelector("[data-modal-whatsapp]"),
-  modalMessagePreview: document.querySelector("[data-modal-message-preview]"),
-  projectGrid: document.querySelector("[data-project-grid]"),
-  projectLightbox: document.querySelector("[data-project-lightbox]"),
-  lightboxImage: document.querySelector("[data-lightbox-image]"),
-  lightboxTitle: document.querySelector("[data-lightbox-title]"),
-  searchMobile: document.querySelector("[data-search-mobile]"),
-  filterToggle: document.querySelector("#filter-toggle"),
-  filterDrawer: document.querySelector("#filter-drawer"),
-  filterBackdrop: document.querySelector("#filter-backdrop"),
-  filterClose: document.querySelector("#filter-close"),
+  loader:               document.querySelector("[data-loader]"),
+  header:               document.querySelector(".site-header"),
+  menuButton:           document.querySelector(".menu-button"),
+  categoryNav:          document.querySelector("[data-category-nav]"),
+  search:               document.querySelector("[data-search]"),
+  filterCategories:     document.querySelector("[data-filter-categories]"),
+  filterTypes:          document.querySelector("[data-filter-types]"),
+  activeFilters:        document.querySelector("[data-active-filters]"),
+  grid:                 document.querySelector("[data-product-grid]"),
+  resultCount:          document.querySelector("[data-result-count]"),
+  catalogTitle:         document.querySelector("[data-catalog-title]"),
+  emptyState:           document.querySelector("[data-empty-state]"),
+  modal:                document.querySelector("[data-product-modal]"),
+  modalImage:           document.querySelector("[data-modal-image]"),
+  modalThumbs:          document.querySelector("[data-modal-thumbs]"),
+  modalCategory:        document.querySelector("[data-modal-category]"),
+  modalCode:            document.querySelector("[data-modal-code]"),
+  modalName:            document.querySelector("[data-modal-name]"),
+  modalDescription:     document.querySelector("[data-modal-description]"),
+  modalType:            document.querySelector("[data-modal-type]"),
+  modalValue:           document.querySelector("[data-modal-value]"),
+  modalMeasures:        document.querySelector("[data-modal-measures]"),
+  modalOpenings:        document.querySelector("[data-modal-openings]"),
+  modalFinishes:        document.querySelector("[data-modal-finishes]"),
+  modalObservation:     document.querySelector("[data-modal-observation]"),
+  modalWhatsapp:        document.querySelector("[data-modal-whatsapp]"),
+  modalMessagePreview:  document.querySelector("[data-modal-message-preview]"),
+  projectGrid:          document.querySelector("[data-project-grid]"),
+  projectLightbox:      document.querySelector("[data-project-lightbox]"),
+  lightboxImage:        document.querySelector("[data-lightbox-image]"),
+  lightboxTitle:        document.querySelector("[data-lightbox-title]"),
+  searchMobile:         document.querySelector("[data-search-mobile]"),
+  filterToggle:         document.querySelector("#filter-toggle"),
+  filterDrawer:         document.querySelector("#filter-drawer"),
+  filterBackdrop:       document.querySelector("#filter-backdrop"),
+  filterClose:          document.querySelector("#filter-close"),
 };
 
-const categoryLabels = new Map(categories.map((category) => [category.id, category.label]));
-
-const normalize = (value) =>
-  String(value)
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-
-const uniqueTypes = () => ["todos", ...new Set(products.map((product) => product.tipo))];
-
-const buildWhatsAppMessage = () => {
-  const product = state.activeProduct;
-  if (!product) return "";
-
-  const baseMessage = `Olá, André! Vi no showroom o modelo ${product.nome} (${product.codigo}), categoria ${categoryLabels.get(
-    product.categoria,
-  )}, medida ${state.selectedMeasure}, abertura ${state.selectedOpening} e acabamento ${
-    state.selectedFinish
-  }. Gostaria de solicitar um orçamento personalizado.`;
-
-  return state.observation ? `${baseMessage} Observação: ${state.observation}` : baseMessage;
-};
-
-const updateWhatsAppLink = () => {
-  const message = buildWhatsAppMessage();
-  dom.modalWhatsapp.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-  dom.modalMessagePreview.textContent = message;
-};
-
-const getFilteredProducts = () => {
-  const query = normalize(state.query);
-
-  return products.filter((product) => {
-    const byCategory = state.category === "todos" || product.categoria === state.category;
-    const byType = state.type === "todos" || product.tipo === state.type;
-    const searchable = normalize(
-      [
-        product.id,
-        product.nome,
-        product.categoria,
-        product.codigo,
-        product.tipo,
-        product.descricao,
-        product.valor,
-        ...product.medidas,
-        ...product.acabamento,
-      ].join(" "),
-    );
-
-    return byCategory && byType && (!query || searchable.includes(query));
-  });
-};
-
-const renderSkeleton = () => {
-  dom.grid.classList.add("is-loading");
-  dom.grid.innerHTML = Array.from(
-    { length: 6 },
-    () => `
-      <article class="skeleton-card">
-        <span></span>
-        <div></div>
-        <strong></strong>
-        <p></p>
-      </article>
-    `,
-  ).join("");
-};
-
-const renderCategoryNav = () => {
-  dom.categoryNav.innerHTML = categories
-    .map(
-      (category) => `
-        <button class="${state.category === category.id ? "active" : ""}" type="button" data-category="${
-          category.id
-        }">${category.label}</button>
-      `,
-    )
-    .join("");
-};
-
-const renderFilterButtons = () => {
-  dom.filterCategories.innerHTML = categories
-    .map(
-      (category) => `
-        <button class="${state.category === category.id ? "selected" : ""}" type="button" data-category="${
-          category.id
-        }">${category.label}</button>
-      `,
-    )
-    .join("");
-
-  dom.filterTypes.innerHTML = uniqueTypes()
-    .map(
-      (type) => `
-        <button class="${state.type === type ? "selected" : ""}" type="button" data-type="${type}">
-          ${type === "todos" ? "Todos os tipos" : type}
-        </button>
-      `,
-    )
-    .join("");
-};
-
-const renderActiveFilters = () => {
-  const tags = [];
-
-  if (state.category !== "todos") tags.push(categoryLabels.get(state.category));
-  if (state.type !== "todos") tags.push(state.type);
-  if (state.query) tags.push(`Busca: ${state.query}`);
-
-  dom.activeFilters.innerHTML = tags.map((tag) => `<span>${tag}</span>`).join("");
-};
-
-const createProductCard = (product, index) => `
-  <article class="product-card reveal" style="--delay: ${index * 55}ms">
-    <button type="button" class="favorite-button" aria-label="Salvar modelo ${product.nome}">♡</button>
-    <button type="button" class="product-open" data-product-id="${product.id}" aria-label="Abrir detalhes de ${
-      product.nome
-    }">
-      <img src="${product.imagens[0]}" alt="${product.nome}" loading="lazy" decoding="async" />
-    </button>
-    <div class="product-info">
-      <span class="tag">${product.tipo}</span>
-      <h3>${product.nome}</h3>
-      <p>${product.descricao}</p>
-      <div class="product-meta">
-        <span>${product.codigo}</span>
-        <strong>${product.valor}</strong>
-      </div>
-      <button type="button" data-product-id="${product.id}" class="quote-button">Fazer orçamento</button>
-    </div>
-  </article>
-`;
-
-const renderProjects = () => {
-  if (!dom.projectGrid) return;
-
-  dom.projectGrid.innerHTML = projects
-    .map(
-      (project, index) => `
-        <button class="project-card reveal ${index === 0 || index === 2 ? "is-tall" : ""}" type="button"
-          data-project-id="${project.id}" style="--delay: ${index * 70}ms">
-          <img src="${project.imagem}" alt="${project.titulo}" loading="lazy" decoding="async" />
-          <span>${project.categoria}</span>
-          <strong>${project.titulo}</strong>
-        </button>
-      `,
-    )
-    .join("");
-};
-
-const renderProducts = () => {
-  const filteredProducts = getFilteredProducts();
-  const categoryName = state.category === "todos" ? "Modelos em destaque" : categoryLabels.get(state.category);
-
-  dom.catalogTitle.textContent = categoryName;
-  dom.resultCount.textContent = `${filteredProducts.length} modelo${filteredProducts.length === 1 ? "" : "s"}`;
-  dom.emptyState.hidden = filteredProducts.length > 0;
-  dom.grid.classList.remove("is-loading");
-  dom.grid.innerHTML = filteredProducts.map(createProductCard).join("");
-
-  renderActiveFilters();
-  observeReveals();
-};
-
+// ── Render helper ────────────────────────────────────────────
 const renderAll = () => {
-  renderCategoryNav();
-  renderFilterButtons();
-  renderSkeleton();
-  window.setTimeout(renderProducts, 280);
+  renderCategoryNav(dom.categoryNav, state.category);
+  renderFilterButtons(dom.filterCategories, dom.filterTypes, state.category, state.type);
+  renderSkeleton(dom.grid);
+  window.setTimeout(() => renderProducts(dom, state, observeReveals), 280);
 };
 
-const setCategory = (category) => {
-  state.category = category;
-  renderAll();
-};
-
-const setType = (type) => {
-  state.type = type;
-  renderAll();
-};
-
-const selectOption = (container, value) => {
-  [...container.querySelectorAll("button")].forEach((button) => {
-    button.classList.toggle("selected", button.dataset.value === value);
-  });
-};
-
-const renderOptionGroup = (container, values, selectedValue, onSelect) => {
-  container.innerHTML = values
-    .map(
-      (value) => `
-        <button class="${value === selectedValue ? "selected" : ""}" type="button" data-value="${value}">
-          ${value}
-        </button>
-      `,
-    )
-    .join("");
-
-  container.querySelectorAll("button").forEach((button) => {
-    button.addEventListener("click", () => {
-      onSelect(button.dataset.value);
-      selectOption(container, button.dataset.value);
-      updateWhatsAppLink();
-    });
-  });
-};
-
-const openModal = (productId) => {
-  const product = products.find((item) => item.id === productId);
-  if (!product) return;
-
-  state.activeProduct = product;
-  state.selectedImage = product.imagens[0];
-  state.selectedMeasure = product.medidas[0];
-  state.selectedOpening = product.abertura[0];
-  state.selectedFinish = product.acabamento[0];
-  state.observation = "";
-
-  dom.modalImage.src = state.selectedImage;
-  dom.modalImage.alt = product.nome;
-  dom.modalCategory.textContent = categoryLabels.get(product.categoria);
-  dom.modalCode.textContent = `Código: ${product.codigo}`;
-  dom.modalName.textContent = product.nome;
-  dom.modalDescription.textContent = product.descricao;
-  dom.modalType.textContent = product.tipo;
-  dom.modalValue.textContent = product.valor;
-  dom.modalObservation.value = "";
-
-  dom.modalThumbs.innerHTML = product.imagens
-    .map(
-      (image, index) => `
-        <button class="${index === 0 ? "active" : ""}" type="button" data-image="${image}" aria-label="Imagem ${
-        index + 1
-      } de ${product.nome}">
-          <img src="${image}" alt="" loading="lazy" decoding="async" />
-        </button>
-      `,
-    )
-    .join("");
-
-  dom.modalThumbs.querySelectorAll("button").forEach((button) => {
-    button.addEventListener("click", () => {
-      state.selectedImage = button.dataset.image;
-      dom.modalImage.src = state.selectedImage;
-      dom.modalThumbs.querySelectorAll("button").forEach((thumb) => thumb.classList.remove("active"));
-      button.classList.add("active");
-    });
-  });
-
-  renderOptionGroup(dom.modalMeasures, product.medidas, state.selectedMeasure, (value) => {
-    state.selectedMeasure = value;
-  });
-  renderOptionGroup(dom.modalOpenings, product.abertura, state.selectedOpening, (value) => {
-    state.selectedOpening = value;
-  });
-  renderOptionGroup(dom.modalFinishes, product.acabamento, state.selectedFinish, (value) => {
-    state.selectedFinish = value;
-  });
-
-  updateWhatsAppLink();
-  dom.modal.setAttribute("aria-hidden", "false");
-  document.body.classList.add("modal-open");
-};
-
-const closeModal = () => {
-  dom.modal.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("modal-open");
-};
-
-const openProjectLightbox = (projectId) => {
-  const project = projects.find((item) => item.id === projectId);
-  if (!project) return;
-
-  dom.lightboxImage.src = project.imagem;
-  dom.lightboxImage.alt = project.titulo;
-  dom.lightboxTitle.textContent = project.titulo;
-  dom.projectLightbox.setAttribute("aria-hidden", "false");
-};
-
-const closeProjectLightbox = () => {
-  dom.projectLightbox?.setAttribute("aria-hidden", "true");
-};
-
-let revealObserver;
-
-function observeReveals() {
-  if (!("IntersectionObserver" in window)) {
-    document.querySelectorAll(".reveal").forEach((element) => element.classList.add("is-visible"));
-    return;
-  }
-
-  revealObserver?.disconnect();
-  revealObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.12 },
-  );
-
-  document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
-}
-
+// ── Eventos ──────────────────────────────────────────────────
 const bindEvents = () => {
+  // Header scroll
   window.addEventListener("scroll", () => {
     dom.header.classList.toggle("is-scrolled", window.scrollY > 24);
-  });
+  }, { passive: true });
 
-  dom.menuButton?.addEventListener("click", () => {
-    const isOpen = dom.header.classList.toggle("menu-open");
-    dom.menuButton.setAttribute("aria-expanded", String(isOpen));
-  });
+  // Menu mobile
+  initMobileMenu(dom.header, dom.menuButton);
 
-  dom.categoryNav.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-category]");
-    if (!button) return;
-    setCategory(button.dataset.category);
+  // Nav de categorias (header)
+  dom.categoryNav.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-category]");
+    if (!btn) return;
+    state.category = btn.dataset.category;
+    renderAll();
     document.querySelector("#catalogo")?.scrollIntoView({ behavior: "smooth" });
-    dom.header.classList.remove("menu-open");
-    dom.menuButton?.setAttribute("aria-expanded", "false");
+    closeMobileMenu(dom.header, dom.menuButton);
   });
 
-  dom.filterCategories.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-category]");
-    if (button) setCategory(button.dataset.category);
+  // Filtros laterais
+  dom.filterCategories.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-category]");
+    if (btn) { state.category = btn.dataset.category; renderAll(); }
   });
 
-  dom.filterTypes.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-type]");
-    if (button) setType(button.dataset.type);
+  dom.filterTypes.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-type]");
+    if (btn) { state.type = btn.dataset.type; renderAll(); }
   });
 
-  dom.search.addEventListener("input", (event) => {
-    state.query = event.target.value.trim();
+  // Busca desktop
+  dom.search.addEventListener("input", (e) => {
+    state.query = e.target.value.trim();
     renderAll();
   });
 
-  dom.modalObservation?.addEventListener("input", (event) => {
-    state.observation = event.target.value.trim();
-    updateWhatsAppLink();
-  });
-
-  dom.grid.addEventListener("click", (event) => {
-    const trigger = event.target.closest("[data-product-id]");
-    if (trigger) openModal(trigger.dataset.productId);
-  });
-
-  document.querySelectorAll("[data-close-modal]").forEach((button) => {
-    button.addEventListener("click", closeModal);
-  });
-
-  dom.projectGrid?.addEventListener("click", (event) => {
-    const projectButton = event.target.closest("[data-project-id]");
-    if (projectButton) openProjectLightbox(projectButton.dataset.projectId);
-  });
-
-  document.querySelector("[data-close-project]")?.addEventListener("click", closeProjectLightbox);
-  dom.projectLightbox?.addEventListener("click", (event) => {
-    if (event.target === dom.projectLightbox) closeProjectLightbox();
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeModal();
-    if (event.key === "Escape") closeProjectLightbox();
-  });
-
-  // Mobile search
-  dom.searchMobile?.addEventListener("input", (event) => {
-    state.query = event.target.value.trim();
+  // Busca mobile
+  dom.searchMobile?.addEventListener("input", (e) => {
+    state.query = e.target.value.trim();
     renderAll();
   });
 
-  // Filter drawer
-  const openDrawer = () => {
-    dom.filterDrawer?.setAttribute("aria-hidden", "false");
-    dom.filterToggle?.setAttribute("aria-expanded", "true");
-    document.body.classList.add("drawer-open");
-  };
-
-  const closeDrawer = () => {
-    dom.filterDrawer?.setAttribute("aria-hidden", "true");
-    dom.filterToggle?.setAttribute("aria-expanded", "false");
-    document.body.classList.remove("drawer-open");
-  };
-
-  dom.filterToggle?.addEventListener("click", openDrawer);
-  dom.filterClose?.addEventListener("click", closeDrawer);
-  dom.filterBackdrop?.addEventListener("click", closeDrawer);
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeDrawer();
+  // Grid de produtos → abre modal
+  dom.grid.addEventListener("click", (e) => {
+    const trigger = e.target.closest("[data-product-id]");
+    if (trigger) openModal(trigger.dataset.productId, products, dom, state);
   });
 
-  // Auto-close drawer ao selecionar filtro
-  dom.filterDrawer?.addEventListener("click", (event) => {
-    if (event.target.closest("[data-category]") || event.target.closest("[data-type]")) {
-      setTimeout(closeDrawer, 180);
-    }
+  // Fechar modal
+  document.querySelectorAll("[data-close-modal]").forEach((btn) =>
+    btn.addEventListener("click", () => closeModal(dom))
+  );
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") { closeModal(dom); closeProjectLightbox(dom); }
+  });
+
+  // Observação no modal → atualiza WhatsApp
+  dom.modalObservation?.addEventListener("input", (e) => {
+    state.observation = e.target.value.trim();
+    updateWhatsAppLink(dom, state);
+  });
+
+  // Projetos → lightbox
+  dom.projectGrid?.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-project-id]");
+    if (btn) openProjectLightbox(btn.dataset.projectId, projects, dom);
+  });
+
+  document.querySelector("[data-close-project]")?.addEventListener("click", () =>
+    closeProjectLightbox(dom)
+  );
+  dom.projectLightbox?.addEventListener("click", (e) => {
+    if (e.target === dom.projectLightbox) closeProjectLightbox(dom);
+  });
+
+  // Filter drawer mobile
+  initFilterDrawer({
+    filterToggle:   dom.filterToggle,
+    filterDrawer:   dom.filterDrawer,
+    filterBackdrop: dom.filterBackdrop,
+    filterClose:    dom.filterClose,
   });
 };
 
+// ── Inicialização ────────────────────────────────────────────
 const init = () => {
   bindEvents();
-  renderProjects();
+  renderProjects(dom.projectGrid, projects);
   renderAll();
   observeReveals();
-
-  window.setTimeout(() => {
-    dom.loader?.classList.add("is-hidden");
-  }, 420);
+  initParallax();
+  hideLoader(dom.loader);
 };
 
 init();
