@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Showroom premium da ANDRÉ SERRALHEIRO com portas, janelas e esquadrias sob medida em alumínio e metal."
+    />
+    <meta name="theme-color" content="#111214" />
+    <title>ANDRÉ SERRALHEIRO | Showroom Premium de Esquadrias</title>
+    <link rel="preconnect" href="https://images.pexels.com" />
+    <link rel="stylesheet" href="styles/main.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "ANDRÉ SERRALHEIRO",
+        "description": "Showroom de portas, janelas e esquadrias sob medida.",
+        "telephone": "+55 21 96858-7713",
+        "url": "https://metalurgicaandre.vercel.app/"
+      }
+    </script>
+  </head>
+  <body>
+    <div class="page-loader" data-loader aria-label="Carregando showroom">
+      <span></span>
+    </div>
+
+    <header class="site-header" id="inicio">
+      <div class="header-main">
+        <a class="brand" href="#inicio" aria-label="ANDRÉ SERRALHEIRO">
+          <img src="assets/logo.png" alt="Logo ANDRÉ SERRALHEIRO" width="132" height="132" />
+        </a>
+
+        <label class="search-box">
+          <span>Buscar</span>
+          <input data-search type="search" placeholder="Buscar modelo, acabamento ou código" autocomplete="off" />
+        </label>
+
+        <div class="header-actions">
+          <a href="#catalogo">Catálogo</a>
+          <a href="#projetos">Projetos</a>
+          <a href="#empresa">Empresa</a>
+          <a class="quote-pill" href="https://wa.me/5521968587713" target="_blank" rel="noreferrer">
+            WhatsApp
+          </a>
+        </div>
+
+        <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <nav class="site-nav" id="site-nav" aria-label="Categorias principais" data-category-nav></nav>
+    </header>
+
+    <main>
+      <section class="hero cinematic-hero reveal">
+        <div class="hero-depth" aria-hidden="true"></div>
+        <div class="hero-copy">
+          <p class="eyebrow">Showroom de alto padrão</p>
+          <h1>Portas e esquadrias sob medida.</h1>
+          <p>
+            Um catálogo sofisticado para explorar modelos, acabamentos e medidas de referência antes de solicitar
+            um orçamento direto com André.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-action" href="https://wa.me/5521968587713" target="_blank" rel="noreferrer">
+              Solicitar orçamento
+            </a>
+            <a class="secondary-action" href="#projetos">Ver projetos</a>
+          </div>
+        </div>
+
+        <article class="hero-showcase" aria-label="Destaques da serralheria">
+          <img src="assets/logo.png" alt="Identidade visual da ANDRÉ SERRALHEIRO" loading="lazy" />
+          <div class="showcase-lines">
+            <span>Portas</span>
+            <span>Janelas</span>
+            <span>Portões</span>
+          </div>
+        </article>
+
+        <div class="hero-metrics" aria-label="Diferenciais">
+          <span><strong>Sob medida</strong> projeto por projeto</span>
+          <span><strong>Acabamento</strong> alinhado e resistente</span>
+          <span><strong>WhatsApp</strong> orçamento inteligente</span>
+        </div>
+
+        <a class="scroll-indicator" href="#catalogo" aria-label="Descer para o catálogo">
+          <span></span>
+        </a>
+      </section>
+
+      <section class="catalog-section section-shell" id="catalogo">
+        <aside class="catalog-sidebar reveal" aria-label="Filtros do catálogo">
+          <div class="filter-card">
+            <strong>Categorias</strong>
+            <div class="filter-list" data-filter-categories></div>
+          </div>
+
+          <div class="filter-card">
+            <strong>Tipos</strong>
+            <div class="filter-list" data-filter-types></div>
+          </div>
+
+          <div class="sidebar-note">
+            <span>Orçamento inteligente</span>
+            <p>Abra um modelo, escolha medida, abertura e acabamento. O WhatsApp já sai com a mensagem montada.</p>
+          </div>
+        </aside>
+
+        <div class="catalog-content reveal">
+          <div class="section-heading catalog-heading">
+            <div>
+              <p class="eyebrow">Catálogo premium</p>
+              <h2 data-catalog-title>Modelos em destaque</h2>
+            </div>
+            <span class="result-count" data-result-count>Carregando</span>
+          </div>
+
+          <div class="active-filters" data-active-filters></div>
+          <div class="product-grid is-loading" data-product-grid aria-live="polite"></div>
+          <p class="empty-state" data-empty-state hidden>Nenhum modelo encontrado para essa busca.</p>
+        </div>
+      </section>
+
+      <section class="projects-section section-shell reveal" id="projetos">
+        <div class="section-heading">
+          <p class="eyebrow">Projetos realizados</p>
+          <h2>Um portfólio com linguagem de arquitetura.</h2>
+          <p>Imagens de referência para apresentar como o catálogo pode evoluir com fotos reais dos trabalhos.</p>
+        </div>
+        <div class="project-masonry" data-project-grid></div>
+      </section>
+
+      <section class="about-section reveal" id="empresa">
+        <div class="about-media">
+          <img
+            src="https://images.pexels.com/photos/5974054/pexels-photo-5974054.jpeg?auto=compress&cs=tinysrgb&w=1200"
+            alt="Trabalho de serralheria em metal com faíscas"
+            loading="lazy"
+          />
+        </div>
+        <div class="about-copy">
+          <p class="eyebrow">ANDRÉ SERRALHEIRO</p>
+          <h2>Fabricação sob medida com atendimento direto.</h2>
+          <p>
+            A proposta do site é posicionar a serralheria como uma empresa confiável, moderna e preparada para
+            transformar medidas, referências e necessidades reais em peças bem acabadas.
+          </p>
+          <div class="about-grid">
+            <span>Medida e avaliação</span>
+            <span>Produção sob demanda</span>
+            <span>Instalação combinada</span>
+            <span>Acabamento personalizado</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="process-band reveal" id="processo">
+        <div class="section-heading">
+          <p class="eyebrow">Processo</p>
+          <h2>Da escolha do modelo à instalação.</h2>
+        </div>
+        <div class="timeline">
+          <article><span>01</span><strong>Escolha o modelo</strong><p>O cliente explora o catálogo e abre o produto desejado.</p></article>
+          <article><span>02</span><strong>Solicite orçamento</strong><p>O WhatsApp recebe uma mensagem pronta com as escolhas.</p></article>
+          <article><span>03</span><strong>Medição</strong><p>As medidas finais são conferidas conforme o local.</p></article>
+          <article><span>04</span><strong>Fabricação</strong><p>A peça é produzida com acabamento e material combinados.</p></article>
+          <article><span>05</span><strong>Instalação</strong><p>A entrega é finalizada com alinhamento e acabamento.</p></article>
+        </div>
+      </section>
+
+      <section class="contact-section reveal" id="contato">
+        <div>
+          <p class="eyebrow">Conversão</p>
+          <h2>O catálogo trabalha para iniciar boas conversas.</h2>
+          <p>O cliente vê modelos, entende opções e chega ao WhatsApp com informações suficientes para um orçamento mais rápido.</p>
+        </div>
+        <a class="primary-action" href="https://wa.me/5521968587713" target="_blank" rel="noreferrer">
+          Chamar no WhatsApp
+        </a>
+      </section>
+    </main>
+
+    <a class="floating-whatsapp" href="https://wa.me/5521968587713" target="_blank" rel="noreferrer">
+      <span>Orçamento</span>
+    </a>
+
+    <div class="modal-shell" data-product-modal aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal></div>
+      <section class="product-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <button class="modal-close" type="button" data-close-modal aria-label="Fechar detalhes">×</button>
+        <div class="modal-gallery">
+          <div class="modal-image-wrap">
+            <span class="modal-badge" data-modal-category></span>
+            <img data-modal-image alt="" />
+          </div>
+          <div class="modal-thumbs" data-modal-thumbs></div>
+        </div>
+
+        <article class="modal-info">
+          <span class="detail-code" data-modal-code></span>
+          <h2 id="modal-title" data-modal-name></h2>
+          <p class="detail-summary" data-modal-description></p>
+
+          <div class="meta-grid">
+            <div>
+              <span>Tipo</span>
+              <strong data-modal-type></strong>
+            </div>
+            <div>
+              <span>Valor</span>
+              <strong data-modal-value></strong>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <strong>Medida de referência</strong>
+            <div class="option-list" data-modal-measures></div>
+          </div>
+
+          <div class="option-group">
+            <strong>Lado de abertura</strong>
+            <div class="option-list" data-modal-openings></div>
+          </div>
+
+          <div class="option-group">
+            <strong>Acabamento</strong>
+            <div class="option-list" data-modal-finishes></div>
+          </div>
+
+          <label class="observation-field">
+            <strong>Observação para o orçamento</strong>
+            <textarea
+              data-modal-observation
+              rows="4"
+              placeholder="Ex: quero uma porta para área externa, com pintura preta e instalação no local."
+            ></textarea>
+          </label>
+
+          <a class="whatsapp-action" data-modal-whatsapp target="_blank" rel="noreferrer">
+            Solicitar orçamento no WhatsApp
+          </a>
+
+          <div class="detail-note">
+            <strong>Mensagem automática</strong>
+            <p data-modal-message-preview></p>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    <div class="project-lightbox" data-project-lightbox aria-hidden="true">
+      <button type="button" data-close-project aria-label="Fechar projeto">×</button>
+      <img data-lightbox-image alt="" />
+      <strong data-lightbox-title></strong>
+    </div>
+
+    <script type="module" src="scripts/app.js"></script>
+  </body>
+</html>
