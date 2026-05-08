@@ -15,14 +15,14 @@ export const projects = [
       "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1200",
   },
   {
-    id: "porta-preta",
-    titulo: "Entrada com acabamento escuro",
-    categoria: "Arquitetura",
+    id: "box-branco",
+    titulo: "Box Branco",
+    categoria: "Box",
     imagem:
-      "https://images.pexels.com/photos/10727928/pexels-photo-10727928.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "assets/images/projects/box.jpeg",
   },
   {
-    id: "ambiente-integrado",
+    id: "box-preto",
     titulo: "Vão integrado com esquadria",
     categoria: "Área gourmet",
     imagem:
