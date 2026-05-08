@@ -3,26 +3,26 @@
    ============================================================ */
 
 :root {
-  /* Cores */
-  --ink:      #0f1011;
-  --ink-2:    #171a1d;
-  --ink-3:    #22272b;
-  --paper:    #f4f1eb;
-  --panel:    #ffffff;
-  --muted:    #6e7880;
-  --line:     rgba(15, 16, 17, 0.1);
-  --line-dark: rgba(255, 255, 255, 0.12);
-  --metal:    #b2b5b3;
-  --accent:   #c8752a;
-  --accent-2: #e5a35b;
-  --success:  #147a3f;
+  /* Cores - Light Premium */
+  --ink:      #1F1F1F;
+  --ink-2:    #2B2B2B;
+  --ink-3:    #4A4A4A;
+  --paper:    #F6F4EF;
+  --panel:    #FFFFFF;
+  --muted:    #737373;
+  --line:     rgba(0, 0, 0, 0.08);
+  --line-dark: rgba(0, 0, 0, 0.12);
+  --metal:    #8F9396;
+  --accent:   #B46A3C;
+  --accent-2: #C97842;
+  --success:  #1A7A4A;
 
-  /* Sombras */
-  --shadow:       0 28px 90px rgba(10, 11, 12, 0.18);
-  --shadow-sm:    0 2px 10px rgba(10, 11, 12, 0.07), 0 1px 2px rgba(10, 11, 12, 0.04);
-  --shadow-md:    0 8px 32px rgba(10, 11, 12, 0.1), 0 2px 8px rgba(10, 11, 12, 0.06);
-  --shadow-lg:    0 24px 64px rgba(10, 11, 12, 0.14), 0 8px 24px rgba(10, 11, 12, 0.08);
-  --shadow-hover: 0 32px 80px rgba(10, 11, 12, 0.18), 0 8px 24px rgba(10, 11, 12, 0.1);
+  /* Sombras - Suaves e elegantes */
+  --shadow:       0 28px 90px rgba(0, 0, 0, 0.04);
+  --shadow-sm:    0 2px 10px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md:    0 8px 32px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.03);
+  --shadow-lg:    0 24px 64px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 32px 80px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.05);
 
   /* Easing */
   --ease:        cubic-bezier(0.25, 0, 0.2, 1);
@@ -48,7 +48,7 @@ body {
     Inter, ui-sans-serif, system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--ink);
-  background: #f7f4ef;
+  background: var(--paper);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;

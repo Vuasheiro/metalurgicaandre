@@ -9,6 +9,26 @@
 // ============================================================
 
 export const products = [
+
+
+  {
+    id: "porta-diagonal",
+    nome: "Porta Diagonal",
+    categoria: "portas",
+    codigo: "AS-000",
+    tipo: "Porta social",
+    descricao:
+      "Modelo de visual limpo, ideal para entrada social com pintura personalizada, puxador vertical e estrutura sob medida.",
+    imagens: [
+      "assets/images/products/porta-diagonal.png",
+      "assets/images/logo/logo.png",
+    ],
+    medidas: ["2,10 x 0,80", "2,14 x 0,77"],
+    acabamento: ["Branco acetinado", "Preto fosco", "Cinza alumínio", "Brilho"],
+    abertura: ["Direita", "Esquerda"],
+    valor: "A combinar",
+    destaque: true,
+  },
   {
     id: "porta-lambril-friso-horizontal",
     nome: "Porta Lambril com Friso Horizontal",
