@@ -1,5 +1,5 @@
 // ============================================================
-// app.js — Orquestrador principal
+// app.js — Orquestrador principal (v1.1.0)
 // ============================================================
 // Importa os módulos e inicializa a aplicação.
 // Mantém o estado global e as referências do DOM.

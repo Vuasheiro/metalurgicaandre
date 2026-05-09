@@ -1,0 +1,47 @@
+backend:
+  name: github
+  repo: Vuasheiro/metalurgicaandre
+  branch: main
+
+media_folder: assets/images/products
+public_folder: assets/images/products
+
+collections:
+  - name: settings
+    label: Configurações Gerais
+    files:
+      - label: Site Settings
+        name: settings
+        file: data/settings.js
+        fields:
+          - { label: WhatsApp, name: WHATSAPP_NUMBER, widget: string }
+          - { label: Empresa, name: COMPANY_NAME, widget: string }
+
+  - name: products
+    label: Catálogo de Produtos
+    folder: data
+    extension: js
+    format: json-frontmatter # We will need to adapt the data structure or use a custom widget
+    create: true
+    fields:
+      - { label: ID, name: id, widget: string }
+      - { label: Nome, name: nome, widget: string }
+      - { label: Categoria, name: categoria, widget: select, options: [portas, janelas, esquadrias, portoes] }
+      - { label: Código, name: codigo, widget: string }
+      - { label: Tipo, name: tipo, widget: string }
+      - { label: Descrição, name: descricao, widget: text }
+      - { label: Imagens, name: imagens, widget: list, field: { label: Caminho, name: path, widget: image } }
+      - { label: Medidas, name: medidas, widget: list, field: { label: Medida, name: val, widget: string } }
+      - { label: Acabamento, name: acabamento, widget: list, field: { label: Cor, name: val, widget: string } }
+      - { label: Valor, name: valor, widget: string }
+      - { label: Destaque, name: destaque, widget: boolean, default: false }
+
+  - name: projects
+    label: Projetos Realizados
+    folder: data
+    create: true
+    fields:
+      - { label: ID, name: id, widget: string }
+      - { label: Título, name: titulo, widget: string }
+      - { label: Categoria, name: categoria, widget: string }
+      - { label: Imagem, name: imagem, widget: image }
