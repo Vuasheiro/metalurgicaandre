@@ -1,0 +1,7 @@
+[
+  { "id": "todos", "label": "Todos" },
+  { "id": "portas", "label": "Portas" },
+  { "id": "janelas", "label": "Janelas" },
+  { "id": "esquadrias", "label": "Esquadrias" },
+  { "id": "portoes", "label": "Portões" }
+]

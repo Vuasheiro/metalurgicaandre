@@ -1,0 +1,6 @@
+{
+  "WHATSAPP_NUMBER": "5521968587713",
+  "COMPANY_NAME": "ANDRÉ SERRALHEIRO",
+  "MESSAGE_TEMPLATE": "Olá André! Vi o modelo *{name}* ({code}) no catálogo e gostaria de um orçamento.\n\n*Especificações selecionadas:*\n- Medida: {measure}\n- Abertura: {opening}\n- Acabamento: {finish}\n\n*Observação:* {observation}",
+  "INSTAGRAM_URL": "https://instagram.com/andreserralheiro"
+}

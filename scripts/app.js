@@ -1,14 +1,10 @@
 // ============================================================
-// app.js — Orquestrador principal (v1.1.0)
-// ============================================================
-// Importa os módulos e inicializa a aplicação.
-// Mantém o estado global e as referências do DOM.
+// app.js — Orquestrador principal (v1.2.0 - CMS Ready)
 // ============================================================
 
-import { products } from "../data/catalog.js";
-import { projects } from "../data/projects.js";
 import { observeReveals, hideLoader, initParallax } from "./animations.js";
 import {
+  initFilters,
   renderCategoryNav,
   renderFilterButtons,
   renderProducts,
@@ -26,6 +22,10 @@ import { initMobileMenu, closeMobileMenu, initFilterDrawer } from "./mobile.js";
 
 // ── Estado global ────────────────────────────────────────────
 const state = {
+  products: [],
+  projects: [],
+  categories: [],
+  settings: {},
   category: "todos",
   type: "todos",
   query: "",
@@ -79,11 +79,40 @@ const dom = {
 
 // ── Render helper ────────────────────────────────────────────
 const renderAll = () => {
-  renderCategoryNav(dom.categoryNav, state.category);
-  renderFilterButtons(dom.filterCategories, dom.filterTypes, state.category, state.type);
+  renderCategoryNav(dom.categoryNav, state.categories, state.category);
+  renderFilterButtons(
+    dom.filterCategories,
+    dom.filterTypes,
+    state.categories,
+    state.products,
+    state.category,
+    state.type
+  );
   renderSkeleton(dom.grid);
-  window.setTimeout(() => renderProducts(dom, state, observeReveals), 280);
+  window.setTimeout(() => renderProducts(dom, state.products, state, observeReveals), 280);
 };
+
+// ── Carregamento de dados ────────────────────────────────────
+async function loadData() {
+  try {
+    const [products, projects, categories, settings] = await Promise.all([
+      fetch("./data/catalog.json").then((r) => r.json()),
+      fetch("./data/projects.json").then((r) => r.json()),
+      fetch("./data/categories.json").then((r) => r.json()),
+      fetch("./data/settings.json").then((r) => r.json()),
+    ]);
+
+    state.products = products;
+    state.projects = projects;
+    state.categories = categories;
+    state.settings = settings;
+
+    // Inicializa labels dos filtros
+    initFilters(categories);
+  } catch (error) {
+    console.error("Erro ao carregar dados do catálogo:", error);
+  }
+}
 
 // ── Eventos ──────────────────────────────────────────────────
 const bindEvents = () => {
@@ -131,7 +160,7 @@ const bindEvents = () => {
   // Grid de produtos → abre modal
   dom.grid.addEventListener("click", (e) => {
     const trigger = e.target.closest("[data-product-id]");
-    if (trigger) openModal(trigger.dataset.productId, products, dom, state);
+    if (trigger) openModal(trigger.dataset.productId, state.products, dom, state, state.settings);
   });
 
   // Fechar modal
@@ -145,13 +174,13 @@ const bindEvents = () => {
   // Observação no modal → atualiza WhatsApp
   dom.modalObservation?.addEventListener("input", (e) => {
     state.observation = e.target.value.trim();
-    updateWhatsAppLink(dom, state);
+    updateWhatsAppLink(dom, state, state.settings);
   });
 
   // Projetos → lightbox
   dom.projectGrid?.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-project-id]");
-    if (btn) openProjectLightbox(btn.dataset.projectId, projects, dom);
+    if (btn) openProjectLightbox(btn.dataset.productId, state.projects, dom);
   });
 
   document.querySelector("[data-close-project]")?.addEventListener("click", () =>
@@ -171,10 +200,13 @@ const bindEvents = () => {
 };
 
 // ── Inicialização ────────────────────────────────────────────
-const init = () => {
+const init = async () => {
   bindEvents();
-  renderProjects(dom.projectGrid, projects);
+  await loadData();
+  
+  renderProjects(dom.projectGrid, state.projects);
   renderAll();
+  
   observeReveals();
   initParallax();
   hideLoader(dom.loader);

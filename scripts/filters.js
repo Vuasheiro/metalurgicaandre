@@ -1,20 +1,8 @@
 // ============================================================
 // filters.js — Filtros, busca e renderização do catálogo
 // ============================================================
-// Responsabilidades:
-//   - Filtrar produtos por categoria, tipo e busca
-//   - Renderizar grid de produtos (com skeleton)
-//   - Renderizar nav de categorias e filtros laterais
-//   - Renderizar tags de filtros ativos
-// ============================================================
 
-import { categories } from "../data/categories.js";
-import { products } from "../data/catalog.js";
-
-// Mapa de id → label para lookup rápido
-export const categoryLabels = new Map(
-  categories.map((c) => [c.id, c.label])
-);
+export let categoryLabels = new Map();
 
 // Normalização para busca sem acento
 export const normalize = (value) =>
@@ -23,10 +11,15 @@ export const normalize = (value) =>
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "");
 
-export const uniqueTypes = () => [
+export const getUniqueTypes = (products) => [
   "todos",
   ...new Set(products.map((p) => p.tipo)),
 ];
+
+// ── Inicialização ───────────────────────────────────────────
+export function initFilters(categories) {
+  categoryLabels = new Map(categories.map((c) => [c.id, c.label]));
+}
 
 // ── Renderização ────────────────────────────────────────────
 
@@ -42,7 +35,7 @@ export function renderSkeleton(gridEl) {
   ).join("");
 }
 
-export function renderCategoryNav(navEl, activeCategory) {
+export function renderCategoryNav(navEl, categories, activeCategory) {
   navEl.innerHTML = categories
     .map(
       (c) => `
@@ -53,7 +46,7 @@ export function renderCategoryNav(navEl, activeCategory) {
     .join("");
 }
 
-export function renderFilterButtons(categoriesEl, typesEl, activeCategory, activeType) {
+export function renderFilterButtons(categoriesEl, typesEl, categories, products, activeCategory, activeType) {
   categoriesEl.innerHTML = categories
     .map(
       (c) => `
@@ -63,7 +56,8 @@ export function renderFilterButtons(categoriesEl, typesEl, activeCategory, activ
     )
     .join("");
 
-  typesEl.innerHTML = uniqueTypes()
+  const types = getUniqueTypes(products);
+  typesEl.innerHTML = types
     .map(
       (type) => `
         <button class="${activeType === type ? "selected" : ""}"
@@ -83,7 +77,7 @@ export function renderActiveFilters(containerEl, state) {
   containerEl.innerHTML = tags.map((tag) => `<span>${tag}</span>`).join("");
 }
 
-export function getFilteredProducts(state) {
+export function getFilteredProducts(products, state) {
   const query = normalize(state.query);
   return products.filter((p) => {
     const byCategory = state.category === "todos" || p.categoria === state.category;
@@ -118,8 +112,8 @@ export function createProductCard(product, index) {
   `;
 }
 
-export function renderProducts(dom, state, observeReveals) {
-  const filtered = getFilteredProducts(state);
+export function renderProducts(dom, products, state, observeReveals) {
+  const filtered = getFilteredProducts(products, state);
   const categoryName =
     state.category === "todos" ? "Modelos em destaque" : categoryLabels.get(state.category);
 
@@ -133,7 +127,7 @@ export function renderProducts(dom, state, observeReveals) {
   observeReveals();
 }
 
-export function renderProjects(projectGridEl, projects, openProjectLightbox) {
+export function renderProjects(projectGridEl, projects) {
   if (!projectGridEl) return;
   projectGridEl.innerHTML = projects
     .map(
