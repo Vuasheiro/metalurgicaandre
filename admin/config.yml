@@ -16,106 +16,129 @@ collections:
         name: settings
         file: data/settings.json
         fields:
-          - { label: WhatsApp (Número com DDD), name: WHATSAPP_NUMBER, widget: string }
-          - { label: Nome da Empresa, name: COMPANY_NAME, widget: string }
-          - { label: Template Mensagem WhatsApp, name: MESSAGE_TEMPLATE, widget: text, hint: "Use {name}, {code}, {measure}, {opening}, {finish}, {observation}" }
-          - { label: Instagram URL, name: INSTAGRAM_URL, widget: string }
+          - label: WhatsApp (Número com DDD)
+            name: WHATSAPP_NUMBER
+            widget: string
+          - label: Nome da Empresa
+            name: COMPANY_NAME
+            widget: string
+          - label: Template Mensagem WhatsApp
+            name: MESSAGE_TEMPLATE
+            widget: text
+            hint: "Use {name}, {code}, {measure}, {opening}, {finish}, {observation}"
+          - label: Instagram URL
+            name: INSTAGRAM_URL
+            widget: string
 
   - name: categories
     label: Categorias
-    file: data/categories.json
-    fields:
-      - name: categories
-        label: Lista de Categorias
-        widget: list
-        field:
-          {
-            label: Categoria,
-            name: category,
-            widget: object,
+    files:
+      - label: Gestão de Categorias
+        name: categories_file
+        file: data/categories.json
+        fields:
+          - label: Lista de Categorias
+            name: categories
+            widget: list
             fields:
-              [
-                { label: ID (slug), name: id, widget: string },
-                { label: Nome Exibido, name: label, widget: string },
-              ],
-          }
+              - label: ID (slug)
+                name: id
+                widget: string
+              - label: Nome Exibido
+                name: label
+                widget: string
 
   - name: products
     label: Catálogo de Produtos
-    folder: data
-    filter: { field: "id", value: ".*" } # Dummy filter to match products.json if we split them, but here we have one file
-    # If we want each product as a separate file, we'd need to change app.js to fetch a list.
-    # For now, let's keep one large JSON file for simplicity in the current architecture.
-    file: data/catalog.json
-    allow_add: true
-    fields:
-      - name: products
-        label: Todos os Produtos
-        widget: list
-        field:
-          {
-            label: Produto,
-            name: product,
-            widget: object,
+    files:
+      - label: Lista de Produtos
+        name: products_file
+        file: data/catalog.json
+        fields:
+          - label: Todos os Produtos
+            name: products
+            widget: list
             fields:
-              [
-                { label: ID (Slug), name: id, widget: string },
-                { label: Nome, name: nome, widget: string },
-                {
-                  label: Categoria,
-                  name: categoria,
-                  widget: select,
-                  options: [portas, janelas, esquadrias, portoes],
-                },
-                { label: Código, name: codigo, widget: string },
-                { label: Tipo, name: tipo, widget: string },
-                { label: Descrição, name: descricao, widget: text },
-                {
-                  label: Imagens,
-                  name: imagens,
-                  widget: list,
-                  field: { label: Imagem, name: img, widget: image },
-                },
-                {
-                  label: Medidas,
-                  name: medidas,
-                  widget: list,
-                  field: { label: Medida, name: val, widget: string },
-                },
-                {
-                  label: Abertura,
-                  name: abertura,
-                  widget: list,
-                  field: { label: Lado, name: val, widget: string },
-                },
-                {
-                  label: Acabamento,
-                  name: acabamento,
-                  widget: list,
-                  field: { label: Cor, name: val, widget: string },
-                },
-                { label: Valor, name: valor, widget: string, default: "A combinar" },
-                { label: Destaque na Home, name: destaque, widget: boolean, default: false },
-              ],
-          }
+              - label: ID (Slug)
+                name: id
+                widget: string
+              - label: Nome
+                name: nome
+                widget: string
+              - label: Categoria
+                name: categoria
+                widget: select
+                options:
+                  - portas
+                  - janelas
+                  - esquadrias
+                  - portoes
+              - label: Código
+                name: codigo
+                widget: string
+              - label: Tipo
+                name: tipo
+                widget: string
+              - label: Descrição
+                name: descricao
+                widget: text
+              - label: Imagens
+                name: imagens
+                widget: list
+                field:
+                  label: Imagem
+                  name: img
+                  widget: image
+              - label: Medidas
+                name: medidas
+                widget: list
+                field:
+                  label: Medida
+                  name: val
+                  widget: string
+              - label: Abertura
+                name: abertura
+                widget: list
+                field:
+                  label: Lado
+                  name: val
+                  widget: string
+              - label: Acabamento
+                name: acabamento
+                widget: list
+                field:
+                  label: Cor
+                  name: val
+                  widget: string
+              - label: Valor
+                name: valor
+                widget: string
+                default: "A combinar"
+              - label: Destaque na Home
+                name: destaque
+                widget: boolean
+                default: false
 
   - name: projects
     label: Projetos Realizados
-    file: data/projects.json
-    fields:
-      - name: projects
-        label: Lista de Projetos
-        widget: list
-        field:
-          {
-            label: Projeto,
-            name: project,
-            widget: object,
+    files:
+      - label: Lista de Projetos
+        name: projects_file
+        file: data/projects.json
+        fields:
+          - label: Lista de Projetos
+            name: projects
+            widget: list
             fields:
-              [
-                { label: ID, name: id, widget: string },
-                { label: Título, name: titulo, widget: string },
-                { label: Categoria, name: categoria, widget: string },
-                { label: Imagem Real, name: imagem, widget: image },
-              ],
-          }
+              - label: ID
+                name: id
+                widget: string
+              - label: Título
+                name: titulo
+                widget: string
+              - label: Categoria
+                name: categoria
+                widget: string
+              - label: Imagem Real
+                name: imagem
+                widget: image

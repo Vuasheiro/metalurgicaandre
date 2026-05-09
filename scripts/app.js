@@ -1,5 +1,5 @@
 // ============================================================
-// app.js — Orquestrador principal (v1.2.0 - CMS Ready)
+// app.js — Orquestrador principal (v1.2.1 - CMS Ready)
 // ============================================================
 
 import { observeReveals, hideLoader, initParallax } from "./animations.js";
@@ -95,20 +95,20 @@ const renderAll = () => {
 // ── Carregamento de dados ────────────────────────────────────
 async function loadData() {
   try {
-    const [products, projects, categories, settings] = await Promise.all([
+    const [productsRes, projectsRes, categoriesRes, settingsRes] = await Promise.all([
       fetch("./data/catalog.json").then((r) => r.json()),
       fetch("./data/projects.json").then((r) => r.json()),
       fetch("./data/categories.json").then((r) => r.json()),
       fetch("./data/settings.json").then((r) => r.json()),
     ]);
 
-    state.products = products;
-    state.projects = projects;
-    state.categories = categories;
-    state.settings = settings;
+    // Lógica resiliente para dados envoltos ou arrays puros
+    state.products = Array.isArray(productsRes) ? productsRes : (productsRes.products || []);
+    state.projects = Array.isArray(projectsRes) ? projectsRes : (projectsRes.projects || []);
+    state.categories = Array.isArray(categoriesRes) ? categoriesRes : (categoriesRes.categories || []);
+    state.settings = settingsRes;
 
-    // Inicializa labels dos filtros
-    initFilters(categories);
+    initFilters(state.categories);
   } catch (error) {
     console.error("Erro ao carregar dados do catálogo:", error);
   }
@@ -116,15 +116,12 @@ async function loadData() {
 
 // ── Eventos ──────────────────────────────────────────────────
 const bindEvents = () => {
-  // Header scroll
   window.addEventListener("scroll", () => {
     dom.header.classList.toggle("is-scrolled", window.scrollY > 24);
   }, { passive: true });
 
-  // Menu mobile
   initMobileMenu(dom.header, dom.menuButton);
 
-  // Nav de categorias (header)
   dom.categoryNav.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-category]");
     if (!btn) return;
@@ -134,7 +131,6 @@ const bindEvents = () => {
     closeMobileMenu(dom.header, dom.menuButton);
   });
 
-  // Filtros laterais
   dom.filterCategories.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-category]");
     if (btn) { state.category = btn.dataset.category; renderAll(); }
@@ -145,52 +141,39 @@ const bindEvents = () => {
     if (btn) { state.type = btn.dataset.type; renderAll(); }
   });
 
-  // Busca desktop
   dom.search.addEventListener("input", (e) => {
     state.query = e.target.value.trim();
     renderAll();
   });
 
-  // Busca mobile
   dom.searchMobile?.addEventListener("input", (e) => {
     state.query = e.target.value.trim();
     renderAll();
   });
 
-  // Grid de produtos → abre modal
   dom.grid.addEventListener("click", (e) => {
     const trigger = e.target.closest("[data-product-id]");
     if (trigger) openModal(trigger.dataset.productId, state.products, dom, state, state.settings);
   });
 
-  // Fechar modal
   document.querySelectorAll("[data-close-modal]").forEach((btn) =>
     btn.addEventListener("click", () => closeModal(dom))
   );
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") { closeModal(dom); closeProjectLightbox(dom); }
-  });
 
-  // Observação no modal → atualiza WhatsApp
   dom.modalObservation?.addEventListener("input", (e) => {
     state.observation = e.target.value.trim();
     updateWhatsAppLink(dom, state, state.settings);
   });
 
-  // Projetos → lightbox
   dom.projectGrid?.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-project-id]");
-    if (btn) openProjectLightbox(btn.dataset.productId, state.projects, dom);
+    if (btn) openProjectLightbox(btn.dataset.project-id, state.projects, dom);
   });
 
   document.querySelector("[data-close-project]")?.addEventListener("click", () =>
     closeProjectLightbox(dom)
   );
-  dom.projectLightbox?.addEventListener("click", (e) => {
-    if (e.target === dom.projectLightbox) closeProjectLightbox(dom);
-  });
 
-  // Filter drawer mobile
   initFilterDrawer({
     filterToggle:   dom.filterToggle,
     filterDrawer:   dom.filterDrawer,
