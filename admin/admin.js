@@ -1,40 +1,28 @@
 // admin/admin.js
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("💎 Premium Admin Scripts Loaded - ANDRÉ SERRALHEIRO");
+  console.log("Admin Scripts Loaded - Minimal Mode");
 
-  // --- CUSTOM DASHBOARD ---
+  // --- MINIMAL DASHBOARD ---
   const renderDashboard = () => {
-    if (document.getElementById('custom-premium-dashboard')) return;
+    if (document.getElementById('custom-minimal-dashboard')) return;
 
     const dashboard = document.createElement('div');
-    dashboard.id = 'custom-premium-dashboard';
+    dashboard.id = 'custom-minimal-dashboard';
     dashboard.innerHTML = `
       <div class="dashboard-header">
-        <h1>Bem-vindo, André ✨</h1>
-        <p>Selecione uma ação rápida para começar</p>
+        <h1 style="font-size: 20px; font-weight: 600; margin: 0 0 8px 0; color: var(--text-main);">Visão Geral</h1>
+        <p style="margin: 0; color: var(--text-secondary); font-size: 14px;">Gerencie seus produtos, projetos e configurações.</p>
       </div>
-      <div class="dashboard-grid">
-        <a href="#/collections/products/new" class="dashboard-card">
-          <div class="card-icon">📸</div>
-          <div class="card-content">
-            <h3>Novo Produto</h3>
-            <p>Adicione um novo item ao catálogo com fotos, medidas e valores.</p>
-          </div>
+      <div class="dashboard-actions">
+        <a href="#/collections/products/new" class="dash-btn">
+          <span>+ Novo Produto</span>
         </a>
-        <a href="#/collections/projects/new" class="dashboard-card">
-          <div class="card-icon">🏗️</div>
-          <div class="card-content">
-            <h3>Novo Projeto</h3>
-            <p>Publique uma foto de um serviço recém-finalizado.</p>
-          </div>
+        <a href="#/collections/projects/new" class="dash-btn">
+          <span>+ Novo Projeto</span>
         </a>
-        <a href="#/collections/settings" class="dashboard-card">
-          <div class="card-icon">⚙️</div>
-          <div class="card-content">
-            <h3>Configurações</h3>
-            <p>Altere o número do WhatsApp, textos e links do site.</p>
-          </div>
+        <a href="#/collections/settings" class="dash-btn">
+          <span>Configurações</span>
         </a>
       </div>
     `;
@@ -45,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             document.querySelector('[class*="AppMainContainer"]');
       
       if (mainContainer) {
-        if (!document.getElementById('custom-premium-dashboard')) {
+        if (!document.getElementById('custom-minimal-dashboard')) {
           mainContainer.insertBefore(dashboard, mainContainer.firstChild);
           document.body.classList.add('dashboard-active');
         }
@@ -58,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const removeDashboard = () => {
-    const dashboard = document.getElementById('custom-premium-dashboard');
+    const dashboard = document.getElementById('custom-minimal-dashboard');
     if (dashboard) {
       dashboard.remove();
       document.body.classList.remove('dashboard-active');
@@ -76,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('hashchange', checkRoute);
 
-  // --- SEMANTIC DOM TAGGING ---
+  // --- SEMANTIC DOM TAGGING (Minimal overrides) ---
   const observer = new MutationObserver((mutations) => {
     const root = document.querySelector('#nc-root');
     if (!root) return;
@@ -90,43 +78,32 @@ document.addEventListener('DOMContentLoaded', () => {
       window._dashboardInitialized = false;
     }
 
-    // Sidebar
     const sidebar = document.querySelector('aside') || (root.children[0] && root.children[0].children[0]);
     if (sidebar && sidebar.tagName !== 'SECTION' && !sidebar.classList.contains('ma-sidebar')) {
       sidebar.classList.add('ma-sidebar');
     }
 
-    // Topbar (Header)
     const header = document.querySelector('header');
     if (header && !header.classList.contains('ma-topbar')) {
       header.classList.add('ma-topbar');
     }
 
-    // App Main (Collections list container)
     const appMain = document.querySelector('[class*="AppMainContainer"]');
     if (appMain && !appMain.classList.contains('ma-app-main')) {
       appMain.classList.add('ma-app-main');
     }
 
-    // Editor Split Container
+    // Gentle tagging for Editor
     const editorContainer = document.querySelector('[class*="EditorContainer"]');
     if (editorContainer && !editorContainer.classList.contains('ma-editor-split')) {
       editorContainer.classList.add('ma-editor-split');
     }
 
-    // Editor Form Area
     const controlPane = document.querySelector('[class*="ControlPaneContainer"]');
     if (controlPane && !controlPane.classList.contains('ma-form-area')) {
       controlPane.classList.add('ma-form-area');
     }
 
-    // Editor Preview Area
-    const previewPane = document.querySelector('[class*="PreviewPaneContainer"]');
-    if (previewPane && !previewPane.classList.contains('ma-preview-area')) {
-      previewPane.classList.add('ma-preview-area');
-    }
-    
-    // Top bar within Editor
     const editorToolbar = document.querySelector('[class*="EditorControlBar"]');
     if (editorToolbar && !editorToolbar.classList.contains('ma-editor-toolbar')) {
       editorToolbar.classList.add('ma-editor-toolbar');
@@ -135,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   observer.observe(document.body, { childList: true, subtree: true });
 
-  // --- CUSTOM PREVIEW TEMPLATE ---
+  // --- REALISTIC MINIMAL PREVIEW ---
   if (window.CMS) {
     const ProductPreview = ({ entry, getAsset }) => {
       const data = entry.get('data').toJS();
@@ -147,22 +124,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const imagemRaw = data.imagens && data.imagens[0] && data.imagens[0].img;
       const imagem = getAsset(imagemRaw) || '';
 
-      // Usando 'h' para renderizar React element
-      return h('div', { className: 'preview-container' },
-        h('div', { className: 'product-card' },
-          h('div', { className: 'card-image' },
-            imagem ? h('img', { src: imagem.toString() }) : h('div', { className: 'image-placeholder' }, 'Sem Imagem')
+      return h('div', { className: 'preview-wrapper' },
+        h('div', { className: 'real-card' },
+          h('div', { className: 'real-card-img' },
+            imagem ? h('img', { src: imagem.toString() }) : h('div', { className: 'img-placeholder' }, 'Sem Imagem')
           ),
-          h('div', { className: 'card-content' },
-            h('div', { className: 'card-badges' },
-              h('span', { className: 'badge category-badge' }, categoria),
-              data.destaque ? h('span', { className: 'badge highlight-badge' }, 'Destaque ✨') : null
-            ),
-            h('h2', { className: 'product-title' }, nome),
-            h('p', { className: 'product-code' }, `Ref: ${codigo}`),
-            h('div', { className: 'product-footer' },
-              h('p', { className: 'product-price' }, valor),
-              h('button', { className: 'fake-btn' }, 'Solicitar Orçamento')
+          h('div', { className: 'real-card-body' },
+            h('span', { className: 'real-category' }, categoria),
+            h('h3', { className: 'real-title' }, nome),
+            h('div', { className: 'real-footer' },
+              h('span', { className: 'real-price' }, valor),
+              h('button', { className: 'real-btn' }, 'Solicitar Orçamento')
             )
           )
         )
