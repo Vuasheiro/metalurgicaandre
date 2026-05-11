@@ -1,11 +1,13 @@
-/* admin.css - Premium UI Overrides for Decap CMS */
+/* admin.css - Premium UI Overrides for Decap CMS (Fase 2) */
 
 :root {
   /* Paleta Premium - André Serralheiro */
   --bg-primary: #F6F4EF;
   --bg-surface: #FFFFFF;
+  --bg-surface-hover: #F8F6F0;
   --text-main: #1A1A1A;
   --text-muted: #666666;
+  --text-faint: #A0A0A0;
   --accent-bronze: #C5A059;
   --accent-bronze-hover: #b08d4b;
   --border-light: rgba(0,0,0,0.06);
@@ -20,6 +22,14 @@
   --radius-sm: 8px;
   --radius-md: 16px;
   --radius-lg: 24px;
+  
+  /* Spacing System */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
 }
 
 /* Global Reset & Typography */
@@ -37,8 +47,12 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-main) !important;
 }
 
-/* Header & Sticky Top Bar */
-header, .premium-header {
+/* ==========================================================================
+   MA-CLASSES (Semantic Tagging via admin.js)
+   ========================================================================== */
+
+/* --- TOPBAR --- */
+.ma-topbar {
   background: rgba(246, 244, 239, 0.85) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
@@ -47,40 +61,92 @@ header, .premium-header {
   position: sticky !important;
   top: 0 !important;
   z-index: 100 !important;
+  height: 64px !important;
 }
 
-/* Sidebar */
-.premium-sidebar {
+/* --- SIDEBAR --- */
+.ma-sidebar {
   background-color: var(--bg-primary) !important;
   border-right: 1px solid var(--border-light) !important;
-  padding-top: 24px !important;
+  padding-top: var(--space-lg) !important;
+  width: 260px !important;
 }
 
-/* Sidebar Links */
-.premium-sidebar a {
+.ma-sidebar a {
   border-radius: var(--radius-sm) !important;
-  margin: 4px 16px !important;
+  margin: var(--space-xs) var(--space-md) !important;
+  padding: var(--space-md) !important;
   color: var(--text-muted) !important;
   font-weight: 500 !important;
   transition: all 0.2s ease !important;
 }
-.premium-sidebar a:hover, .premium-sidebar a[aria-current="page"] {
+
+.ma-sidebar a:hover, .ma-sidebar a[aria-current="page"] {
   background-color: var(--bg-surface) !important;
   color: var(--accent-bronze) !important;
   box-shadow: var(--shadow-sm) !important;
 }
 
-/* Login Screen Override */
-#nc-root > div > section {
-  background-color: var(--bg-primary) !important;
+/* --- APP MAIN (Collections List) --- */
+.ma-app-main {
+  padding: var(--space-xl) !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
 }
-#nc-root > div > section > div {
-  background-color: var(--bg-surface) !important;
-  border-radius: var(--radius-lg) !important;
-  box-shadow: var(--shadow-lg) !important;
-  padding: 48px !important;
+
+/* --- EDITOR SPLIT LAYOUT (Desktop Magic Ratio) --- */
+@media (min-width: 1024px) {
+  .ma-editor-split {
+    display: flex !important;
+    background-color: var(--bg-primary) !important;
+  }
+  
+  .ma-editor-split > div:nth-child(1) {
+    /* Form Area */
+    flex: 0 0 65% !important;
+    max-width: 65% !important;
+    border-right: 1px solid var(--border-light) !important;
+  }
+  
+  .ma-editor-split > div:nth-child(2) {
+    /* Preview Area */
+    flex: 0 0 35% !important;
+    max-width: 35% !important;
+    background-color: #F0EEE9 !important; /* Slightly darker to contrast with white preview card */
+  }
+}
+
+/* --- EDITOR FORM AREA --- */
+.ma-form-area {
+  background: var(--bg-surface) !important;
+  border-radius: var(--radius-md) !important;
+  padding: var(--space-xl) !important;
+  box-shadow: var(--shadow-sm) !important;
+  margin: var(--space-xl) auto !important;
+  max-width: 800px !important;
   border: 1px solid var(--border-light) !important;
 }
+
+/* Editor Toolbar (Save/Publish buttons inside form) */
+.ma-editor-toolbar {
+  background: var(--bg-surface) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-sm) !important;
+  margin: var(--space-md) var(--space-xl) !important;
+  border: 1px solid var(--border-light) !important;
+  padding: var(--space-md) !important;
+}
+
+/* --- MEDIA LIBRARY (Upload Modal) --- */
+.ma-media-library {
+  border-radius: var(--radius-md) !important;
+  overflow: hidden !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+/* ==========================================================================
+   GLOBAL COMPONENTS
+   ========================================================================== */
 
 /* Premium Buttons */
 button, a[role="button"] {
@@ -97,7 +163,7 @@ button[class*="Button"], button[class*="LoginButton"] {
   border: none !important;
   box-shadow: var(--shadow-sm) !important;
   min-height: 48px !important; /* Mobile Friendly */
-  padding: 0 24px !important;
+  padding: 0 var(--space-lg) !important;
 }
 button[class*="Button"]:hover, button[class*="LoginButton"]:hover {
   background-color: var(--accent-bronze) !important;
@@ -105,13 +171,13 @@ button[class*="Button"]:hover, button[class*="LoginButton"]:hover {
   box-shadow: var(--shadow-md) !important;
 }
 
-/* Form Inputs & Mobile First Area */
+/* Form Inputs */
 input, textarea, select {
   font-family: 'Inter', sans-serif !important;
   border-radius: var(--radius-sm) !important;
   border: 1px solid var(--border-light) !important;
   background-color: #FAFAFA !important;
-  padding: 16px !important;
+  padding: var(--space-md) !important;
   font-size: 16px !important; /* Prevent iOS Zoom */
   color: var(--text-main) !important;
   transition: all 0.2s ease !important;
@@ -129,7 +195,7 @@ input:focus, textarea:focus, select:focus {
 label {
   font-weight: 600 !important;
   color: var(--text-main) !important;
-  margin-bottom: 8px !important;
+  margin-bottom: var(--space-sm) !important;
   font-size: 14px !important;
   text-transform: uppercase !important;
   letter-spacing: 0.05em !important;
@@ -143,7 +209,8 @@ a[class*="Card"] {
   box-shadow: var(--shadow-sm) !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   overflow: hidden !important;
-  margin-bottom: 16px !important;
+  margin-bottom: var(--space-md) !important;
+  padding: var(--space-md) !important;
 }
 a[class*="Card"]:hover {
   transform: translateY(-4px) !important;
@@ -151,40 +218,34 @@ a[class*="Card"]:hover {
   border-color: var(--accent-bronze) !important;
 }
 
-/* Editor Container */
-[class*="EditorContainer"] {
+/* Login Screen Override */
+#nc-root > div > section {
   background-color: var(--bg-primary) !important;
 }
-[class*="ControlPaneContainer"] {
-  background: var(--bg-surface) !important;
-  border-radius: var(--radius-md) !important;
-  padding: 32px !important;
-  box-shadow: var(--shadow-sm) !important;
-  margin: 24px auto !important;
-  max-width: 900px !important;
+#nc-root > div > section > div {
+  background-color: var(--bg-surface) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
+  padding: var(--space-2xl) !important;
   border: 1px solid var(--border-light) !important;
 }
 
-/* Media Upload Box */
-[class*="MediaLibrary"] {
-  border-radius: var(--radius-md) !important;
-  overflow: hidden !important;
-}
-
-/* Custom Dashboard Injection Styles */
+/* ==========================================================================
+   CUSTOM INJECTED DASHBOARD
+   ========================================================================== */
 #custom-premium-dashboard {
-  padding: 48px 32px;
+  padding: var(--space-2xl) var(--space-xl);
   max-width: 1200px;
   margin: 0 auto;
   animation: fade-in 0.5s ease-out forwards;
 }
 
 .dashboard-header {
-  margin-bottom: 40px;
+  margin-bottom: var(--space-xl);
 }
 .dashboard-header h1 {
   font-size: 32px !important;
-  margin: 0 0 8px 0;
+  margin: 0 0 var(--space-sm) 0;
   color: var(--text-main);
 }
 .dashboard-header p {
@@ -196,15 +257,15 @@ a[class*="Card"]:hover {
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-  margin-bottom: 48px;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
 }
 
 .dashboard-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
-  padding: 32px;
+  padding: var(--space-xl);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -220,6 +281,7 @@ a[class*="Card"]:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-md);
   border-color: var(--accent-bronze);
+  background-color: var(--bg-surface-hover);
 }
 
 .dashboard-card::after {
@@ -250,7 +312,7 @@ a[class*="Card"]:hover {
 }
 
 .card-content h3 {
-  margin: 0 0 8px 0;
+  margin: 0 0 var(--space-sm) 0;
   font-size: 20px !important;
   color: var(--text-main) !important;
 }
@@ -268,30 +330,39 @@ a[class*="Card"]:hover {
 }
 
 /* Hide original Decap CMS Collection header when dashboard is active */
-.dashboard-active main > h1:first-child,
-.dashboard-active [class*="AppMainContainer"] > h1:first-child,
+.dashboard-active .ma-app-main > h1:first-child,
 .dashboard-active [class*="CollectionTop"] {
   display: none !important;
 }
 
-/* Mobile Adjustments */
+/* ==========================================================================
+   MOBILE REFINEMENTS
+   ========================================================================== */
 @media (max-width: 768px) {
   #custom-premium-dashboard {
-    padding: 24px 16px;
+    padding: var(--space-lg) var(--space-md);
   }
   
   .dashboard-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: var(--space-md);
   }
   
   .dashboard-card {
-    padding: 24px;
+    padding: var(--space-lg);
   }
   
-  [class*="ControlPaneContainer"] {
-    padding: 16px !important;
-    margin: 16px !important;
+  .ma-form-area {
+    padding: var(--space-md) !important;
+    margin: var(--space-md) !important;
     border-radius: var(--radius-sm) !important;
+  }
+  
+  .ma-app-main {
+    padding: var(--space-md) !important;
+  }
+  
+  .ma-editor-toolbar {
+    margin: var(--space-sm) !important;
   }
 }
