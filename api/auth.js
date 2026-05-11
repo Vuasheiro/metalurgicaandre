@@ -1,4 +1,5 @@
 // /api/auth.js
+// Forçando um novo deploy no Vercel para carregar as variáveis de ambiente
 export default function handler(req, res) {
   const client_id = process.env.GITHUB_CLIENT_ID;
   const scope = "repo,user";
