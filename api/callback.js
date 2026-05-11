@@ -1,8 +1,8 @@
 // /api/callback.js
 export default async function handler(req, res) {
   const { code } = req.query;
-  const client_id = process.env.GITHUB_CLIENT_ID || "Ov23ctDcBh0JdO2fPf9H";
-  const client_secret = process.env.GITHUB_CLIENT_SECRET || "a0032d4a641f3dace3320d04f5afab9b96fdfd9b";
+  const client_id = process.env.GITHUB_CLIENT_ID;
+  const client_secret = process.env.GITHUB_CLIENT_SECRET;
 
   if (!code) {
     return res.status(400).send('Código de autorização não fornecido');
