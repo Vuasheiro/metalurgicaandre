@@ -118,99 +118,10 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0 auto !important;
 }
 
-/* Form Elements */
-label {
-  font-weight: 500 !important;
-  color: var(--text-main) !important;
-  font-size: 13px !important;
-  margin-bottom: var(--sp-2) !important;
-  text-transform: none !important;
-  letter-spacing: normal !important;
-}
-
-input, textarea, select {
-  font-family: inherit !important;
-  border-radius: var(--radius-sm) !important;
-  border: 1px solid var(--border-color) !important;
-  background-color: var(--bg-card) !important;
-  padding: 0 var(--sp-3) !important;
-  font-size: 14px !important;
-  color: var(--text-main) !important;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
-  width: 100% !important;
-  box-shadow: none !important;
-}
-
-input, select {
-  height: 40px !important;
-}
-
-textarea {
-  padding: var(--sp-3) !important;
-  min-height: 120px !important;
-  line-height: 1.5 !important;
-}
-
-input:focus, textarea:focus, select:focus {
-  border-color: var(--accent-color) !important;
-  box-shadow: 0 0 0 1px var(--accent-color) !important;
-  outline: none !important;
-}
-
-/* Buttons */
-button, a[role="button"] {
-  border-radius: var(--radius-sm) !important;
-  font-weight: 500 !important;
-  font-size: 14px !important;
-  height: 36px !important;
-  padding: 0 var(--sp-4) !important;
-  transition: all 0.15s ease !important;
-  border: 1px solid transparent !important;
-  cursor: pointer !important;
-}
-
-/* Primary Action Buttons */
-button[class*="Button"], button[class*="LoginButton"] {
-  background-color: var(--text-main) !important;
-  color: #FFFFFF !important;
-  box-shadow: var(--shadow-sm) !important;
-}
-
-button[class*="Button"]:hover, button[class*="LoginButton"]:hover {
-  background-color: #000000 !important;
-  transform: none !important; /* Removed aggressive hover jump */
-}
-
-/* Secondary Buttons */
-button[class*="Secondary"] {
-  background-color: var(--bg-card) !important;
-  color: var(--text-main) !important;
-  border-color: var(--border-color) !important;
-}
-
-button[class*="Secondary"]:hover {
-  background-color: var(--bg-hover) !important;
-}
-
 /* ==========================================================================
-   CARDS & LISTS
+   CARDS & LISTS (Scoping specifically to main dashboard cards if needed, else leave Decap default)
    ========================================================================== */
-a[class*="Card"] {
-  background-color: var(--bg-card) !important;
-  border-radius: var(--radius-md) !important;
-  border: 1px solid var(--border-color) !important;
-  box-shadow: var(--shadow-sm) !important;
-  margin-bottom: var(--sp-4) !important;
-  padding: var(--sp-4) !important;
-  transition: border-color 0.15s ease !important;
-}
-
-a[class*="Card"]:hover {
-  border-color: var(--border-color) !important;
-  background-color: var(--bg-hover) !important;
-  transform: none !important;
-  box-shadow: var(--shadow-sm) !important;
-}
+/* Removed aggressive global button and input overrides to fix black boxes bug */
 
 /* ==========================================================================
    MINIMALIST DASHBOARD
