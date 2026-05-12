@@ -1,7 +1,6 @@
-/* admin.css - Minimalist SaaS Premium UI (Vercel/Linear Style) */
+/* admin.css - Professional PC & Mobile Responsive SaaS UI */
 
 :root {
-  /* Strict Palette */
   --bg-main: #F7F5F1;
   --bg-card: #FFFFFF;
   --bg-hover: #F9F8F6;
@@ -9,160 +8,29 @@
   --text-secondary: #6B6B6B;
   --border-color: rgba(0, 0, 0, 0.08);
   --accent-color: #B67A52;
-  --accent-hover: #9c6744;
   
-  /* Subtle Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
-  
-  /* Radii */
   --radius-sm: 6px;
   --radius-md: 10px;
-  
-  /* Spacing Scale */
-  --sp-1: 4px;
-  --sp-2: 8px;
-  --sp-3: 12px;
-  --sp-4: 16px;
-  --sp-6: 24px;
-  --sp-8: 32px;
 }
 
 /* ==========================================================================
    GLOBAL RESET
    ========================================================================== */
 body, #nc-root {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-family: 'Inter', -apple-system, sans-serif !important;
   background-color: var(--bg-main) !important;
   color: var(--text-main) !important;
   -webkit-font-smoothing: antialiased !important;
-  margin: 0;
-  padding: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
+  color: var(--text-main) !important;
   font-weight: 600 !important;
-  color: var(--text-main) !important;
-  letter-spacing: -0.01em !important;
 }
 
-/* ==========================================================================
-   LAYOUT STRUCTURE
-   ========================================================================== */
-.ma-topbar {
-  background: var(--bg-card) !important;
-  border-bottom: 1px solid var(--border-color) !important;
-  box-shadow: none !important;
-  height: 56px !important;
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 50 !important;
-}
-
-.ma-sidebar {
-  background-color: var(--bg-main) !important;
-  border-right: 1px solid var(--border-color) !important;
-  padding-top: var(--sp-6) !important;
-  width: 240px !important;
-}
-
-.ma-sidebar a {
-  border-radius: var(--radius-sm) !important;
-  margin: var(--sp-1) var(--sp-3) !important;
-  padding: var(--sp-2) var(--sp-3) !important;
-  color: var(--text-secondary) !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  transition: background-color 0.15s ease, color 0.15s ease !important;
-}
-
-.ma-sidebar a:hover {
-  background-color: var(--border-color) !important;
-  color: var(--text-main) !important;
-}
-
-.ma-sidebar a[aria-current="page"] {
-  background-color: var(--bg-card) !important;
-  color: var(--text-main) !important;
-  box-shadow: var(--shadow-sm) !important;
-  border: 1px solid var(--border-color) !important;
-}
-
-.ma-app-main {
-  padding: var(--sp-8) !important;
-  max-width: 1040px !important;
-  margin: 0 auto !important;
-}
-
-/* ==========================================================================
-   EDITOR & FORMS
-   ========================================================================== */
-.ma-editor-split {
-  display: flex !important;
-  background-color: var(--bg-main) !important;
-}
-
-.ma-editor-toolbar {
-  background: var(--bg-card) !important;
-  border-bottom: 1px solid var(--border-color) !important;
-  padding: var(--sp-3) var(--sp-6) !important;
-  box-shadow: none !important;
-  display: flex !important;
-  align-items: center !important;
-}
-
-.ma-form-area {
-  background: var(--bg-main) !important;
-  padding: var(--sp-8) !important;
-  max-width: 720px !important;
-  margin: 0 auto !important;
-}
-
-/* ==========================================================================
-   CARDS & LISTS (Scoping specifically to main dashboard cards if needed, else leave Decap default)
-   ========================================================================== */
-/* Removed aggressive global button and input overrides to fix black boxes bug */
-
-/* ==========================================================================
-   MINIMALIST DASHBOARD
-   ========================================================================== */
-#custom-minimal-dashboard {
-  margin-bottom: var(--sp-8);
-  padding-bottom: var(--sp-6);
-  border-bottom: 1px solid var(--border-color);
-}
-
-.dashboard-actions {
-  display: flex;
-  gap: var(--sp-3);
-  margin-top: var(--sp-4);
-}
-
-.dash-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-2);
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
-  text-decoration: none;
-  padding: 0 var(--sp-4);
-  height: 36px;
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.15s ease;
-  box-shadow: var(--shadow-sm);
-}
-
-.dash-btn:hover {
-  background: var(--bg-hover);
-  border-color: #E2E2E2;
-}
-
-/* ==========================================================================
-   LOGIN SCREEN
-   ========================================================================== */
+/* Login Screen Override */
 #nc-root > div > section {
   background-color: var(--bg-main) !important;
 }
@@ -171,32 +39,210 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--bg-card) !important;
   border-radius: var(--radius-md) !important;
   box-shadow: var(--shadow-md) !important;
-  padding: var(--sp-8) !important;
+  padding: 32px !important;
   border: 1px solid var(--border-color) !important;
-  max-width: 400px !important;
-  width: 100% !important;
 }
 
 /* ==========================================================================
-   MOBILE REFINEMENTS
+   LAYOUT PC & MOBILE
+   ========================================================================== */
+.ma-topbar {
+  background: var(--bg-card) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  box-shadow: none !important;
+}
+
+.ma-sidebar {
+  background-color: var(--bg-main) !important;
+  border-right: 1px solid var(--border-color) !important;
+}
+
+.ma-sidebar a {
+  color: var(--text-secondary) !important;
+  border-radius: var(--radius-sm) !important;
+  margin: 4px 12px !important;
+  padding: 8px 12px !important;
+}
+
+.ma-sidebar a:hover, .ma-sidebar a[aria-current="page"] {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.ma-app-main {
+  max-width: 1000px !important;
+  margin: 0 auto !important;
+}
+
+/* ==========================================================================
+   CARDS (Lista de Entradas / Produtos)
+   ========================================================================== */
+[class*="AppMainContainer"] a[class*="Card"] {
+  background-color: var(--bg-card) !important;
+  border-radius: var(--radius-md) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow-sm) !important;
+  padding: 16px !important;
+  margin-bottom: 12px !important;
+  transition: all 0.2s ease !important;
+}
+
+[class*="AppMainContainer"] a[class*="Card"]:hover {
+  border-color: #d1d1d1 !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+/* ==========================================================================
+   EDITOR DE CONTEÚDO (Forms Seguros)
+   ========================================================================== */
+.ma-editor-split {
+  background-color: var(--bg-main) !important;
+}
+
+.ma-form-area {
+  background-color: var(--bg-card) !important;
+  border-radius: var(--radius-md) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow-sm) !important;
+  padding: 32px !important;
+  max-width: 760px !important;
+  margin: 24px auto !important;
+}
+
+.ma-form-area label {
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  color: var(--text-main) !important;
+  margin-bottom: 6px !important;
+  text-transform: none !important;
+}
+
+/* Targeting only text inputs to avoid breaking internal widgets */
+.ma-form-area input[type="text"],
+.ma-form-area input[type="number"],
+.ma-form-area input[type="email"],
+.ma-form-area select,
+.ma-form-area textarea {
+  border-radius: var(--radius-sm) !important;
+  border: 1px solid var(--border-color) !important;
+  background-color: #FAFAFA !important;
+  color: var(--text-main) !important;
+  padding: 10px 14px !important;
+  font-size: 14px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  transition: border-color 0.2s ease !important;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.02) !important;
+}
+
+.ma-form-area input:focus,
+.ma-form-area select:focus,
+.ma-form-area textarea:focus {
+  border-color: var(--accent-color) !important;
+  outline: none !important;
+  background-color: #FFFFFF !important;
+}
+
+.ma-form-area textarea {
+  min-height: 120px !important;
+  line-height: 1.5 !important;
+}
+
+/* Editor Toolbar (Save/Publish buttons) */
+.ma-editor-toolbar {
+  background-color: var(--bg-card) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  padding: 12px 24px !important;
+}
+
+.ma-editor-toolbar button {
+  border-radius: var(--radius-sm) !important;
+  font-weight: 500 !important;
+  padding: 8px 20px !important;
+  font-size: 14px !important;
+}
+
+/* Media Library Modal */
+.ma-media-library {
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+/* ==========================================================================
+   DASHBOARD CUSTOMIZADO
+   ========================================================================== */
+#custom-minimal-dashboard {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dash-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  text-decoration: none;
+  padding: 0 16px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.dash-btn:hover {
+  background: var(--bg-hover);
+  border-color: #ccc;
+}
+
+.dashboard-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   VERSÃO MOBILE (Celulares e Tablets)
    ========================================================================== */
 @media (max-width: 768px) {
+  /* Layout constraints */
   .ma-app-main {
-    padding: var(--sp-4) !important;
+    padding: 16px !important;
   }
   
   .ma-form-area {
-    padding: var(--sp-4) !important;
+    padding: 20px !important;
+    margin: 16px 0 !important;
+    border-radius: var(--radius-sm) !important;
+    border-left: none !important;
+    border-right: none !important;
   }
   
-  .dashboard-actions {
-    flex-wrap: wrap;
+  /* Touch friendly targets */
+  .ma-form-area input[type="text"],
+  .ma-form-area input[type="number"],
+  .ma-form-area input[type="email"],
+  .ma-form-area select,
+  .dash-btn {
+    height: 48px !important; /* iOS Minimum Touch Target */
+    font-size: 16px !important; /* Prevents auto-zoom on iOS */
+    padding: 0 16px !important;
   }
   
-  input, select {
-    height: 44px !important; /* Slightly larger for touch targets */
+  /* Stack buttons */
+  .dash-btn {
+    width: 100% !important;
+    justify-content: center !important;
   }
-  button, a[role="button"] {
-    height: 44px !important;
+  
+  /* Cards list Mobile */
+  [class*="AppMainContainer"] a[class*="Card"] {
+    padding: 20px !important;
   }
 }
