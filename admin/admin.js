@@ -1,6 +1,21 @@
 // admin/admin.js
 // Lógica de UI: DOM Tagging + Dashboard mínimo + Preview
 
+// ══════════════════════════════════════════════════════════
+// INJEÇÃO TARDIA DO CSS
+// admin.js roda DEPOIS de decap-cms.js (ver index.html).
+// Appending <link> ao final do <head> garante que nosso CSS
+// vem DEPOIS dos <style> do Emotion do Decap — ganhamos o cascade.
+// ══════════════════════════════════════════════════════════
+(function injectAdminCSS() {
+  const existing = document.querySelector('link[href*="admin.css"]');
+  if (existing) existing.remove(); // remove o link estático do head
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = '/admin/admin.css';
+  document.head.appendChild(link); // vai para o FINAL do head
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
   // ──────────────────────────────────────────────
   // 1. DASHBOARD MÍNIMO
@@ -57,21 +72,32 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('hashchange', checkRoute);
 
   // ──────────────────────────────────────────────
-  // 2. DOM TAGGING — Adiciona classes semânticas aos elementos do Decap
-  //    para que o admin.css possa estilizá-los de forma segura
+  // 2. DOM TAGGING — Adiciona classes semânticas + esconde sidebar no mobile
   // ──────────────────────────────────────────────
   let initialized = false;
+  const isMobile = () => window.innerWidth <= 768;
 
   const tagElements = () => {
     const root = document.querySelector('#nc-root');
     if (!root) return;
 
-    // Sidebar
+    // Sidebar — tenta aside, depois qualquer elemento nav/div com Nav no class
     const sidebar =
       document.querySelector('aside') ||
-      document.querySelector('nav[class*="Nav"]');
+      document.querySelector('[class*="Nav__Nav"]') ||
+      document.querySelector('nav');
     if (sidebar && !sidebar.classList.contains('ma-sidebar')) {
       sidebar.classList.add('ma-sidebar');
+    }
+    // Fallback JS: esconde sidebar no mobile diretamente
+    if (sidebar && isMobile()) {
+      sidebar.style.setProperty('display', 'none', 'important');
+      sidebar.style.setProperty('width', '0', 'important');
+      sidebar.style.setProperty('overflow', 'hidden', 'important');
+    } else if (sidebar && !isMobile()) {
+      sidebar.style.removeProperty('display');
+      sidebar.style.removeProperty('width');
+      sidebar.style.removeProperty('overflow');
     }
 
     // Header / Topbar
@@ -84,6 +110,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const appMain = document.querySelector('[class*="AppMainContainer"]');
     if (appMain && !appMain.classList.contains('ma-app-main')) {
       appMain.classList.add('ma-app-main');
+    }
+
+    // Painel de preview — esconde no mobile
+    const previewPane = document.querySelector('[class*="PreviewPane"]') ||
+                        document.querySelector('[class*="EditorPreview"]');
+    if (previewPane && isMobile()) {
+      previewPane.style.setProperty('display', 'none', 'important');
+    } else if (previewPane && !isMobile()) {
+      previewPane.style.removeProperty('display');
     }
 
     // Container do painel de controle (formulário do editor)
@@ -104,6 +139,9 @@ document.addEventListener('DOMContentLoaded', () => {
       initialized = true;
     }
   };
+
+  // Re-aplicar tagging quando janela for redimensionada
+  window.addEventListener('resize', () => tagElements(), { passive: true });
 
   const observer = new MutationObserver(tagElements);
   observer.observe(document.body, { childList: true, subtree: true });
