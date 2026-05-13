@@ -12,7 +12,7 @@
   if (existing) existing.remove(); // remove o link estático do head
   const link = document.createElement('link');
   link.rel = 'stylesheet';
-  link.href = '/admin/admin.css';
+  link.href = 'admin.css';
   document.head.appendChild(link); // vai para o FINAL do head
 })();
 
@@ -187,6 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     CMS.registerPreviewTemplate('products', ProductPreview);
-    CMS.registerPreviewStyle('/admin/preview.css');
+    CMS.registerPreviewStyle('preview.css');
   }
 });
