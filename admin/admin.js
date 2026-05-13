@@ -1,9 +1,10 @@
 // admin/admin.js
+// Lógica de UI: DOM Tagging + Dashboard mínimo + Preview
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("Admin Scripts Loaded - Minimal Mode");
-
-  // --- MINIMAL DASHBOARD ---
+  // ──────────────────────────────────────────────
+  // 1. DASHBOARD MÍNIMO
+  // ──────────────────────────────────────────────
   const renderDashboard = () => {
     if (document.getElementById('custom-minimal-dashboard')) return;
 
@@ -11,52 +12,43 @@ document.addEventListener('DOMContentLoaded', () => {
     dashboard.id = 'custom-minimal-dashboard';
     dashboard.innerHTML = `
       <div class="dashboard-header">
-        <h1 style="font-size: 20px; font-weight: 600; margin: 0 0 8px 0; color: var(--text-main);">Visão Geral</h1>
-        <p style="margin: 0; color: var(--text-secondary); font-size: 14px;">Gerencie seus produtos, projetos e configurações.</p>
+        <h1>André Serralheiro</h1>
+        <p>Painel de gerenciamento de conteúdo</p>
       </div>
       <div class="dashboard-actions">
-        <a href="#/collections/products/new" class="dash-btn">
-          <span>+ Novo Produto</span>
-        </a>
-        <a href="#/collections/projects/new" class="dash-btn">
-          <span>+ Novo Projeto</span>
-        </a>
-        <a href="#/collections/settings" class="dash-btn">
-          <span>Configurações</span>
-        </a>
+        <a href="#/collections/products" class="dash-btn">Catálogo</a>
+        <a href="#/collections/projects" class="dash-btn">Projetos</a>
+        <a href="#/collections/settings" class="dash-btn">Configurações</a>
+        <a href="#/collections/products/new" class="dash-btn accent">+ Novo Produto</a>
       </div>
     `;
 
-    const findMainAndInject = () => {
-      const mainContainer = document.querySelector('main') || 
-                            document.querySelector('.ma-app-main') || 
-                            document.querySelector('[class*="AppMainContainer"]');
-      
-      if (mainContainer) {
+    const inject = () => {
+      const main =
+        document.querySelector('[class*="AppMainContainer"]') ||
+        document.querySelector('main');
+
+      if (main) {
         if (!document.getElementById('custom-minimal-dashboard')) {
-          mainContainer.insertBefore(dashboard, mainContainer.firstChild);
-          document.body.classList.add('dashboard-active');
+          main.insertBefore(dashboard, main.firstChild);
         }
       } else {
-        setTimeout(findMainAndInject, 100);
+        setTimeout(inject, 120);
       }
     };
 
-    findMainAndInject();
+    inject();
   };
 
   const removeDashboard = () => {
-    const dashboard = document.getElementById('custom-minimal-dashboard');
-    if (dashboard) {
-      dashboard.remove();
-      document.body.classList.remove('dashboard-active');
-    }
+    const el = document.getElementById('custom-minimal-dashboard');
+    if (el) el.remove();
   };
 
   const checkRoute = () => {
     const hash = window.location.hash;
     if (hash === '' || hash === '#' || hash === '#/') {
-      setTimeout(renderDashboard, 150);
+      setTimeout(renderDashboard, 200);
     } else {
       removeDashboard();
     }
@@ -64,74 +56,89 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('hashchange', checkRoute);
 
-  // --- SEMANTIC DOM TAGGING (Minimal overrides) ---
-  const observer = new MutationObserver((mutations) => {
+  // ──────────────────────────────────────────────
+  // 2. DOM TAGGING — Adiciona classes semânticas aos elementos do Decap
+  //    para que o admin.css possa estilizá-los de forma segura
+  // ──────────────────────────────────────────────
+  let initialized = false;
+
+  const tagElements = () => {
     const root = document.querySelector('#nc-root');
     if (!root) return;
 
-    if (root.innerHTML.includes('AppMainContainer') || document.querySelector('main')) {
-      if (!window._dashboardInitialized) {
-        checkRoute();
-        window._dashboardInitialized = true;
-      }
-    } else {
-      window._dashboardInitialized = false;
-    }
-
-    const sidebar = document.querySelector('aside') || (root.children[0] && root.children[0].children[0]);
-    if (sidebar && sidebar.tagName !== 'SECTION' && !sidebar.classList.contains('ma-sidebar')) {
+    // Sidebar
+    const sidebar =
+      document.querySelector('aside') ||
+      document.querySelector('nav[class*="Nav"]');
+    if (sidebar && !sidebar.classList.contains('ma-sidebar')) {
       sidebar.classList.add('ma-sidebar');
     }
 
+    // Header / Topbar
     const header = document.querySelector('header');
     if (header && !header.classList.contains('ma-topbar')) {
       header.classList.add('ma-topbar');
     }
 
+    // Área de conteúdo principal
     const appMain = document.querySelector('[class*="AppMainContainer"]');
     if (appMain && !appMain.classList.contains('ma-app-main')) {
       appMain.classList.add('ma-app-main');
     }
 
-    // Gentle tagging for Editor
-    const editorContainer = document.querySelector('[class*="EditorContainer"]');
-    if (editorContainer && !editorContainer.classList.contains('ma-editor-split')) {
-      editorContainer.classList.add('ma-editor-split');
-    }
-
+    // Container do painel de controle (formulário do editor)
     const controlPane = document.querySelector('[class*="ControlPaneContainer"]');
     if (controlPane && !controlPane.classList.contains('ma-form-area')) {
       controlPane.classList.add('ma-form-area');
     }
 
-    const editorToolbar = document.querySelector('[class*="EditorControlBar"]');
-    if (editorToolbar && !editorToolbar.classList.contains('ma-editor-toolbar')) {
-      editorToolbar.classList.add('ma-editor-toolbar');
+    // Barra de controle do editor (Salvar, Publicar)
+    const toolbar = document.querySelector('[class*="EditorControlBar"]');
+    if (toolbar && !toolbar.classList.contains('ma-editor-toolbar')) {
+      toolbar.classList.add('ma-editor-toolbar');
     }
-  });
 
+    // Inicializar verificação de rota uma única vez
+    if (!initialized && appMain) {
+      checkRoute();
+      initialized = true;
+    }
+  };
+
+  const observer = new MutationObserver(tagElements);
   observer.observe(document.body, { childList: true, subtree: true });
 
-  // --- REALISTIC MINIMAL PREVIEW ---
+  // ──────────────────────────────────────────────
+  // 3. PREVIEW DO PRODUTO
+  //    Card fiel ao site real — compacto e elegante
+  // ──────────────────────────────────────────────
   if (window.CMS) {
     const ProductPreview = ({ entry, getAsset }) => {
       const data = entry.get('data').toJS();
-      
-      const nome = data.nome || 'Nome do Produto';
+
+      const nome      = data.nome      || 'Nome do Produto';
       const categoria = data.categoria || 'Categoria';
-      const codigo = data.codigo || 'CÓD-000';
-      const valor = data.valor || 'A combinar';
-      const imagemRaw = data.imagens && data.imagens[0] && data.imagens[0].img;
-      const imagem = getAsset(imagemRaw) || '';
+      const codigo    = data.codigo    || '';
+      const valor     = data.valor     || 'A combinar';
+      const imgRaw    = data.imagens && data.imagens[0] && data.imagens[0].img;
+      const imagem    = imgRaw ? getAsset(imgRaw) : null;
 
       return h('div', { className: 'preview-wrapper' },
         h('div', { className: 'real-card' },
+
+          // Imagem
           h('div', { className: 'real-card-img' },
-            imagem ? h('img', { src: imagem.toString() }) : h('div', { className: 'img-placeholder' }, 'Sem Imagem')
+            imagem
+              ? h('img', { src: imagem.toString(), alt: nome })
+              : h('div', { className: 'img-placeholder' }, 'Sem imagem')
           ),
+
+          // Corpo
           h('div', { className: 'real-card-body' },
             h('span', { className: 'real-category' }, categoria),
             h('h3', { className: 'real-title' }, nome),
+            codigo && h('span', { className: 'real-code' }, `CÓD: ${codigo}`),
+            h('div', { className: 'real-divider' }),
             h('div', { className: 'real-footer' },
               h('span', { className: 'real-price' }, valor),
               h('button', { className: 'real-btn' }, 'Solicitar Orçamento')

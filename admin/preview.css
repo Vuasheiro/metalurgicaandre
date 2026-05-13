@@ -1,101 +1,178 @@
-/* admin/preview.css - Realistic & Minimalist Preview */
+/* ============================================================
+   preview.css — Pré-visualização do Produto
+   Card fiel ao site real: compacto, elegante, proporcional
+   ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-body {
+:root {
+  --preview-accent: #B67A52;
+  --preview-text:   #1F1F1F;
+  --preview-muted:  #6B6B6B;
+  --preview-bg:     #F7F5F1;
+  --preview-card:   #FFFFFF;
+  --preview-border: rgba(0, 0, 0, 0.08);
+}
+
+/* Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background-color: transparent; /* Inherit from editor pane if possible, or keep transparent */
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  color: #1F1F1F;
 }
 
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background-color: var(--preview-bg);
+  color: var(--preview-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   WRAPPER — Centra o card com label de contexto
+   ============================================================ */
 .preview-wrapper {
-  padding: 32px 16px;
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 32px 16px;
+  gap: 16px;
 }
 
+/* Label "Pré-visualização" */
+.preview-wrapper::before {
+  content: 'Pré-visualização';
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--preview-muted);
+}
+
+/* ============================================================
+   CARD DO PRODUTO — Fiel ao card do site
+   ============================================================ */
 .real-card {
   width: 100%;
-  max-width: 300px; /* Small, proportionate */
-  background: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 8px;
+  max-width: 260px;
+  background: var(--preview-card);
+  border: 1px solid var(--preview-border);
+  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); /* Extremely soft shadow */
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 4px 16px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
 }
 
+/* Área da imagem — proporção 4:3 */
 .real-card-img {
   width: 100%;
-  aspect-ratio: 4/3;
-  background-color: #F7F5F1;
+  aspect-ratio: 4 / 3;
+  background-color: #EEECE8;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  position: relative;
 }
 
 .real-card-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .img-placeholder {
-  color: #A0A0A0;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
-}
-
-.real-card-body {
-  padding: 16px;
+  color: #AAAAAA;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 8px;
 }
 
-.real-category {
-  font-size: 11px;
-  font-weight: 600;
-  color: #B67A52; /* Accent color */
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
+.img-placeholder::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 32px;
+  border: 2px dashed #CCCCCC;
+  border-radius: 6px;
 }
 
-.real-title {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: #1F1F1F;
-  line-height: 1.3;
-}
-
-.real-footer {
-  margin-top: 8px;
+/* Corpo do card */
+.real-card-body {
+  padding: 14px 16px 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 6px;
+}
+
+/* Categoria (badge) */
+.real-category {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--preview-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Título / nome do produto */
+.real-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--preview-text);
+  line-height: 1.3;
+  margin: 0;
+}
+
+/* Código do produto */
+.real-code {
+  font-size: 11px;
+  color: var(--preview-muted);
+  font-weight: 400;
+}
+
+/* Separador leve */
+.real-divider {
+  height: 1px;
+  background-color: var(--preview-border);
+  margin: 6px 0;
+}
+
+/* Rodapé: valor + botão */
+.real-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
 }
 
 .real-price {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  color: #6B6B6B;
+  color: var(--preview-muted);
 }
 
+/* Botão "Solicitar Orçamento" — fake, desabilitado */
 .real-btn {
-  background: #1F1F1F;
+  background-color: var(--preview-text);
   color: #FFFFFF;
   border: none;
   border-radius: 6px;
-  padding: 10px;
-  font-size: 13px;
+  padding: 10px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
   font-weight: 500;
   text-align: center;
-  cursor: default; /* It's a fake button */
+  cursor: default;
   width: 100%;
+  letter-spacing: 0.01em;
 }
