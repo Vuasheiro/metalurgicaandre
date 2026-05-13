@@ -21,13 +21,23 @@ echo.
 
 git add .
 git commit -m "%MSG%"
-git push
+
+echo.
+echo Sincronizando com o repositorio remoto...
+git pull --rebase origin main
+
+echo.
+echo Enviando para o GitHub...
+git push origin main
 
 echo.
 if %ERRORLEVEL%==0 (
     echo SUCESSO! Site sera atualizado em instantes no Vercel.
 ) else (
-    echo ERRO! Verifique se ha alteracoes ou a conexao com internet.
+    echo.
+    echo ERRO! Tente rodar manualmente:
+    echo   git pull origin main
+    echo   git push origin main
 )
 
 echo.
